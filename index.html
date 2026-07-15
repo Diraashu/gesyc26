@@ -19,6 +19,18 @@
     --card:        rgba(16,37,78,.35);
     --line:        rgba(212,175,55,.25);
   }
+  @font-face{
+    font-family:'Cronisse';
+    src:url('assets/fonts/Cronisse-Regular.ttf') format('truetype');
+    font-display:swap;
+  }
+  /* display font for headings & subheads only — body stays Segoe UI */
+  h1,h2,h3,h4,
+  .sec-title,.sec-label,.nav-brand,.hero-school,.hero-sub,.coming-soon,
+  .car-name,.car-tag,.comm-page-title,.comm-page-tag,.register-line,
+  .placeholder-box .big,.od-lbl,.org-name,.org-role{
+    font-family:'Cronisse','Segoe UI',serif;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
@@ -320,6 +332,26 @@
   .comm-page-body ul.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));column-gap:34px}
   .tba{color:var(--gold-deep);font-style:italic}
 
+  /* ============ ORGANIZERS (Core Secretariat) ============ */
+  .org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:30px;margin-top:54px}
+  .org-card{
+    text-align:center;padding:34px 20px 28px;border-radius:18px;
+    background:var(--card);border:1px solid var(--line);
+    transition:transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .org-card:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 15px 40px rgba(0,0,0,.5),0 0 30px rgba(212,175,55,.12)}
+  .org-photo{
+    width:150px;height:150px;border-radius:50%;margin:0 auto 20px;overflow:hidden;
+    border:2px solid var(--gold);
+    background:radial-gradient(circle at 35% 30%, rgba(212,175,55,.25), rgba(16,37,78,.55));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 30px rgba(212,175,55,.15);
+  }
+  .org-photo img{width:100%;height:100%;object-fit:cover}
+  .org-photo .fallback{font-size:2.2rem;font-weight:800}
+  .org-name{font-size:1.12rem;font-weight:800;letter-spacing:.04em}
+  .org-role{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-bright);margin-top:6px}
+
   /* ============ FOOTER ============ */
   footer{border-top:1px solid var(--line);background:rgba(5,8,15,.9);padding:60px 6vw 30px}
   .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px}
@@ -461,12 +493,9 @@
   <div class="subpage">
     <a class="back-link" href="#/">← Back to Home</a>
     <div class="sec-label">The people behind GESYC</div>
-    <h2 class="sec-title gold-text">The Organizers</h2>
+    <h2 class="sec-title gold-text">Core Secretariat</h2>
     <hr class="rule">
-    <div class="placeholder-box">
-      <div class="big gold-text">Coming Soon</div>
-      <p>The Secretariat and Organizing Committee will be revealed shortly. Stay tuned.</p>
-    </div>
+    <div class="org-grid" id="org-grid"><!-- cards injected by JS --></div>
   </div>
 </div>
 
@@ -518,13 +547,13 @@
 
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
   var COMMITTEES = [
-    { slug:'salutis',    name:'Forum Salutis',              tag:'Health',                  letter:'S',
+    { slug:'salutis', eb:['Raeed Aziz Moinudeen','Lemula Renita'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
       agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
       about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
-    { slug:'terra',      name:'Forum Terra',                tag:'Environment',             letter:'T',
+    { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
       agenda:'To be announced.',
       about:'[Committee description coming soon.]' },
-    { slug:'mercatus',   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
+    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Venkatkumar'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
       agenda:'Addressing Youth Unemployment in a Changing Economy',
       about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.',
       extra:
@@ -552,16 +581,28 @@
         '</ul>' +
         '<h4>Expected Outcome</h4>' +
         '<p>Stakeholder-driven recommendations that create youth employment, strengthen the education–industry–government bridge, promote inclusive hiring, and build a workforce ready for an evolving global economy.</p>' },
-    { slug:'libertas',   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
+    { slug:'libertas', eb:['Sisubaran Moovendhan','Kavya Dhiriaiviyam'],   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
       agenda:'Bridging India\'s Rural-Urban Divide',
       about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.' },
-    { slug:'athleticum', name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
+    { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
       agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
       about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.' },
-    { slug:'veritas',    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
+    { slug:'veritas', eb:['Haasini Kandalam','Devmilanie Dhakshayine'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
       agenda:'Classified…',
       about:'In a world where information shapes opinions and influences decisions, the press holds the power to inform, inspire, and drive change. This committee brings together passionate voices from media, journalism, and communication to uphold the principles of truth, integrity, and accountability in the pursuit of responsible and ethical reporting.' }
   ];
+  /* ===== CORE SECRETARIAT — photos go in assets/organizers/<slug>.jpg ===== */
+  var SECRETARIAT = [
+    { slug:'raeed',     name:'Raeed Aziz Moinudeen',   role:'Executive Director' },
+    { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Chief Advisor' },
+    { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director' },
+    { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Head of Delegate Affairs' },
+    { slug:'chaarika',  name:'Chaarika Venkatkumar',   role:'Head of Delegate Affairs' },
+    { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff' },
+    { slug:'kavya',     name:'Kavya Dhiriaiviyam',     role:'Secretary of Conference' },
+    { slug:'lohith',    name:'Lohith Tiruvuru',        role:'Director of Photography' }
+  ];
+
   function fieldHTML(text){
     var placeholder = text.charAt(0) === '[' || text.indexOf('To be announced') === 0;
     return '<p class="'+(placeholder ? 'tba' : '')+'">'+text+'</p>';
@@ -744,12 +785,25 @@
           '<h4>Agenda</h4>' + fieldHTML(c.agenda) +
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           (c.extra || '') +
-          '<h4>Executive Board</h4><p class="tba">To be announced.</p>' +
+          '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return '<li>'+n+'</li>';}).join('') + '</ul>' +
           '<h4>Background Guide</h4><p class="tba">Coming soon.</p>' +
         '</div>' +
       '</div>';
     pagesWrap.appendChild(div);
   });
+
+  /* ===== ORGANIZERS PAGE ===== */
+  document.getElementById('org-grid').innerHTML = SECRETARIAT.map(function(o){
+    var initials = o.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    return '<div class="org-card">' +
+      '<div class="org-photo">' +
+        '<img src="assets/organizers/'+o.slug+'.jpg" alt="'+o.name+'" ' +
+        'onerror="this.outerHTML=\'<span class=&quot;fallback gold-text&quot;>'+initials+'</span>\'">' +
+      '</div>' +
+      '<div class="org-name gold-text">'+o.name+'</div>' +
+      '<div class="org-role">'+o.role+'</div>' +
+    '</div>';
+  }).join('');
 
   /* ===== HASH ROUTER ===== */
   function route(){
