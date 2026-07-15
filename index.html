@@ -130,6 +130,17 @@
     border:1px solid var(--gold);font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;
     color:var(--gold-light);background:rgba(212,175,55,.06);
   }
+  .register-cta{margin-top:30px;text-align:center}
+  .register-line{font-size:clamp(.9rem,2.4vw,1.1rem);letter-spacing:.3em;text-transform:uppercase;font-weight:800;margin-bottom:14px;padding-left:.3em}
+  .register-btn{
+    display:inline-block;padding:14px 46px;border-radius:999px;font-weight:800;
+    letter-spacing:.28em;text-transform:uppercase;font-size:.85rem;padding-left:calc(46px + .28em);
+    color:var(--black);background:linear-gradient(120deg,var(--gold-deep),var(--gold-light) 45%,var(--gold));
+    animation:btnPulse 2.2s ease-in-out infinite;transition:transform .2s;
+  }
+  .register-btn:hover{transform:translateY(-3px) scale(1.03)}
+  @keyframes btnPulse{0%,100%{box-shadow:0 0 18px rgba(212,175,55,.35)}50%{box-shadow:0 0 46px rgba(212,175,55,.7)}}
+
   .scroll-hint{position:absolute;bottom:26px;color:var(--muted);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;animation:bob 2s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
@@ -138,8 +149,14 @@
   .sec-label{text-align:center;font-size:.8rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue-bright);margin-bottom:8px}
   .sec-title{text-align:center;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;letter-spacing:.05em}
 
-  /* ============ COUNTDOWN ============ */
-  #countdown-grid{display:flex;gap:clamp(10px,3vw,28px);justify-content:center;flex-wrap:wrap;margin-top:48px}
+  /* ============ COUNTDOWN (holographic arcade rollers) ============ */
+  #countdown-grid{display:flex;gap:clamp(10px,3vw,28px);justify-content:center;flex-wrap:wrap;margin-top:48px;
+    perspective:950px}
+  /* curved arcade panel: outer boxes angle inward */
+  .count-box:nth-child(1){transform:rotateY(12deg)}
+  .count-box:nth-child(2){transform:rotateY(4deg)}
+  .count-box:nth-child(3){transform:rotateY(-4deg)}
+  .count-box:nth-child(4){transform:rotateY(-12deg)}
   .count-box{
     min-width:clamp(80px,18vw,150px);padding:26px 10px;text-align:center;border-radius:16px;
     background:linear-gradient(180deg,rgba(16,37,78,.6),rgba(5,8,15,.8));
@@ -154,8 +171,33 @@
     0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(212,175,55,.2);border-color:var(--line)}
     50%{box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 32px rgba(212,175,55,.22), inset 0 1px 0 rgba(212,175,55,.35);border-color:rgba(212,175,55,.55)}
   }
-  .count-box .num{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:900;font-variant-numeric:tabular-nums}
-  .count-box .lbl{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .count-box{position:relative;overflow:hidden}
+  .count-box::after{ /* curved glass: scanlines + screen glare */
+    content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0 1px, transparent 1px 3px),
+      radial-gradient(130% 80% at 50% -10%, rgba(127,212,255,.14), transparent 55%),
+      radial-gradient(120% 60% at 50% 115%, rgba(63,111,216,.12), transparent 60%);
+  }
+  .count-box .num{
+    font-size:clamp(2.2rem,6vw,3.8rem);font-weight:900;font-variant-numeric:tabular-nums;
+    display:flex;justify-content:center;gap:.04em;
+  }
+  .digit{position:relative;width:.64em;height:1.18em;perspective:240px;overflow:hidden}
+  .digit span{
+    position:absolute;left:0;right:0;top:0;text-align:center;backface-visibility:hidden;
+    background:linear-gradient(180deg,#8fd8ff 0%,#f3dc8b 38%,#d4af37 62%,#8fd8ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation-fill-mode:forwards;
+    filter:drop-shadow(0 0 10px rgba(127,212,255,.35));
+  }
+  .num{animation:holoShift 7s linear infinite}
+  @keyframes holoShift{0%,100%{filter:hue-rotate(0deg) brightness(1)}45%{filter:hue-rotate(-14deg) brightness(1.12)}55%{filter:hue-rotate(10deg) brightness(.98)}}
+  .roll-in{animation:rollIn .55s cubic-bezier(.2,.75,.3,1) forwards;transform-origin:50% 160%}
+  .roll-out{animation:rollOut .55s cubic-bezier(.6,.1,.8,.4) forwards;transform-origin:50% -60%}
+  @keyframes rollIn{from{transform:translateY(-105%) rotateX(72deg);opacity:0}60%{opacity:1}to{transform:translateY(0) rotateX(0)}}
+  @keyframes rollOut{from{transform:translateY(0) rotateX(0);opacity:1}to{transform:translateY(105%) rotateX(-72deg);opacity:0}}
+  .count-box .lbl{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:6px;position:relative;z-index:2}
   #countdown-note{text-align:center;color:var(--muted);margin-top:26px;font-size:.9rem;letter-spacing:.08em}
 
   /* ============ COMMITTEE CAROUSEL (3D coverflow) ============ */
@@ -350,6 +392,11 @@
     <div class="hero-sub">Good Earth School Youth Conclave</div>
     <div class="coming-soon">Coming Soon</div>
     <div class="hero-date">21 August 2026 · Chennai</div>
+    <div class="register-cta">
+      <div class="register-line gold-text">Register for GESYC '26!</div>
+      <!-- TODO: replace href with the real registration / Google Form link -->
+      <a class="register-btn" href="#" onclick="alert('Registrations opening soon — stay tuned!');return false;">✦ Click Here ✦</a>
+    </div>
     <div class="scroll-hint">▼ scroll</div>
   </header>
 
@@ -502,20 +549,42 @@
       '</div>';
   }
 
-  /* ===== COUNTDOWN ===== */
+  /* ===== COUNTDOWN (rolling digits) ===== */
   function pad(n){ return String(n).padStart(2,'0'); }
+  function setGroup(id, str){
+    var box = document.getElementById(id);
+    if (box.children.length !== str.length){        // (re)build digit drums
+      box.innerHTML = '';
+      for (var i = 0; i < str.length; i++){
+        var d = document.createElement('span');
+        d.className = 'digit';
+        d.dataset.v = str[i];
+        d.innerHTML = '<span class="roll-in">' + str[i] + '</span>';
+        box.appendChild(d);
+      }
+      return;
+    }
+    for (var j = 0; j < str.length; j++){
+      var dg = box.children[j];
+      if (dg.dataset.v !== str[j]){                 // roll old digit out, new one in
+        dg.innerHTML = '<span class="roll-out">' + dg.dataset.v + '</span>' +
+                       '<span class="roll-in">'  + str[j] + '</span>';
+        dg.dataset.v = str[j];
+      }
+    }
+  }
   function tick(){
     var diff = EVENT_START - new Date();
     if (diff <= 0){
       document.getElementById('countdown-note').textContent = 'The conclave is LIVE!';
-      ['days','hours','mins','secs'].forEach(function(k){ document.getElementById('cd-'+k).textContent='00'; });
+      ['days','hours','mins','secs'].forEach(function(k){ setGroup('cd-'+k,'00'); });
       return;
     }
     var s = Math.floor(diff/1000);
-    document.getElementById('cd-days').textContent  = pad(Math.floor(s/86400));
-    document.getElementById('cd-hours').textContent = pad(Math.floor(s%86400/3600));
-    document.getElementById('cd-mins').textContent  = pad(Math.floor(s%3600/60));
-    document.getElementById('cd-secs').textContent  = pad(s%60);
+    setGroup('cd-days',  pad(Math.floor(s/86400)));
+    setGroup('cd-hours', pad(Math.floor(s%86400/3600)));
+    setGroup('cd-mins',  pad(Math.floor(s%3600/60)));
+    setGroup('cd-secs',  pad(s%60));
   }
   tick(); setInterval(tick, 1000);
 
