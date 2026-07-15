@@ -472,18 +472,28 @@
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
   var COMMITTEES = [
     { slug:'salutis',    name:'Forum Salutis',              tag:'Health',                  letter:'S',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' },
+      agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
+      about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
     { slug:'terra',      name:'Forum Terra',                tag:'Environment',             letter:'T',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' },
+      agenda:'To be announced.',
+      about:'[Committee description coming soon.]' },
     { slug:'mercatus',   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' },
-    { slug:'libertas',   name:'Forum Libertas et Cultura',  tag:'Human Rights & Culture',  letter:'L',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' },
+      agenda:'Addressing Youth Unemployment in a Changing Economy',
+      about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.' },
+    { slug:'libertas',   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
+      agenda:'Bridging India\'s Rural-Urban Divide',
+      about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.' },
     { slug:'athleticum', name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' },
+      agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
+      about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.' },
     { slug:'veritas',    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
-      about:'[Committee description coming soon — send me the brochure text and I\'ll drop it in.]' }
+      agenda:'Classified…',
+      about:'In a world where information shapes opinions and influences decisions, the press holds the power to inform, inspire, and drive change. This committee brings together passionate voices from media, journalism, and communication to uphold the principles of truth, integrity, and accountability in the pursuit of responsible and ethical reporting.' }
   ];
+  function fieldHTML(text){
+    var placeholder = text.charAt(0) === '[' || text.indexOf('To be announced') === 0;
+    return '<p class="'+(placeholder ? 'tba' : '')+'">'+text+'</p>';
+  }
 
   function logoHTML(c, cls){
     return '<div class="'+cls+'">' +
@@ -579,8 +589,8 @@
           '<div class="comm-page-tag">'+c.tag+'</div></div>' +
         '</div>' +
         '<div class="comm-page-body">' +
-          '<h4>About the Committee</h4><p class="tba">'+c.about+'</p>' +
-          '<h4>Agenda</h4><p class="tba">To be announced.</p>' +
+          '<h4>Agenda</h4>' + fieldHTML(c.agenda) +
+          '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           '<h4>Executive Board</h4><p class="tba">To be announced.</p>' +
           '<h4>Background Guide</h4><p class="tba">Coming soon.</p>' +
         '</div>' +
