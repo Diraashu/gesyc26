@@ -149,55 +149,56 @@
   .sec-label{text-align:center;font-size:.8rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue-bright);margin-bottom:8px}
   .sec-title{text-align:center;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;letter-spacing:.05em}
 
-  /* ============ COUNTDOWN (holographic arcade rollers) ============ */
-  #countdown-grid{display:flex;gap:clamp(10px,3vw,28px);justify-content:center;flex-wrap:wrap;margin-top:48px;
-    perspective:950px}
-  /* curved arcade panel: outer boxes angle inward */
-  .count-box:nth-child(1){transform:rotateY(12deg)}
-  .count-box:nth-child(2){transform:rotateY(4deg)}
-  .count-box:nth-child(3){transform:rotateY(-4deg)}
-  .count-box:nth-child(4){transform:rotateY(-12deg)}
-  .count-box{
-    min-width:clamp(80px,18vw,150px);padding:26px 10px;text-align:center;border-radius:16px;
-    background:linear-gradient(180deg,rgba(16,37,78,.6),rgba(5,8,15,.8));
-    border:1px solid var(--line);
-    box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(212,175,55,.2);
-    animation:pulseGlow 3.2s ease-in-out infinite;
+  /* ============ COUNTDOWN — single arcade odometer ============ */
+  #odometer{
+    display:flex;align-items:flex-start;justify-content:center;gap:clamp(8px,2.2vw,24px);
+    width:fit-content;max-width:94vw;margin:48px auto 0;
+    padding:32px clamp(18px,5vw,58px) 24px;border-radius:26px;
+    background:linear-gradient(180deg,rgba(16,37,78,.55),rgba(5,8,15,.92));
+    border:1px solid var(--line);position:relative;
+    box-shadow:0 20px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(212,175,55,.25), 0 0 40px rgba(212,175,55,.08);
   }
-  .count-box:nth-child(2){animation-delay:.8s}
-  .count-box:nth-child(3){animation-delay:1.6s}
-  .count-box:nth-child(4){animation-delay:2.4s}
-  @keyframes pulseGlow{
-    0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(212,175,55,.2);border-color:var(--line)}
-    50%{box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 32px rgba(212,175,55,.22), inset 0 1px 0 rgba(212,175,55,.35);border-color:rgba(212,175,55,.55)}
+  #odometer::before, #odometer::after{ /* roller shadow fade top & bottom */
+    content:'';position:absolute;left:1px;right:1px;height:30px;z-index:5;pointer-events:none;
   }
-  .count-box{position:relative;overflow:hidden}
-  .count-box::after{ /* curved glass: scanlines + screen glare */
-    content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
-    background:
-      repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0 1px, transparent 1px 3px),
-      radial-gradient(130% 80% at 50% -10%, rgba(127,212,255,.14), transparent 55%),
-      radial-gradient(120% 60% at 50% 115%, rgba(63,111,216,.12), transparent 60%);
+  #odometer::before{top:1px;border-radius:26px 26px 0 0;background:linear-gradient(180deg,rgba(5,8,15,.85),transparent)}
+  #odometer::after{bottom:1px;border-radius:0 0 26px 26px;background:linear-gradient(0deg,rgba(5,8,15,.85),transparent)}
+  .od-group{text-align:center}
+  .od-digits{display:flex;gap:.05em;justify-content:center}
+  .od-digit{
+    height:1.1em;width:.62em;overflow:hidden;
+    font-size:clamp(2.4rem,7vw,4.4rem);font-weight:900;line-height:1.1;
+    font-variant-numeric:tabular-nums;
   }
-  .count-box .num{
-    font-size:clamp(2.2rem,6vw,3.8rem);font-weight:900;font-variant-numeric:tabular-nums;
-    display:flex;justify-content:center;gap:.04em;
+  .od-strip{transition:transform .8s cubic-bezier(.35,.75,.25,1);will-change:transform}
+  .od-cell{height:1.1em;display:flex;align-items:center;justify-content:center}
+  .od-sep{
+    font-size:clamp(2rem,5.5vw,3.4rem);font-weight:900;line-height:1.35;
+    color:var(--gold);opacity:.55;animation:sepBlink 2s ease-in-out infinite;
   }
-  .digit{position:relative;width:.64em;height:1.18em;perspective:240px;overflow:hidden}
-  .digit span{
-    position:absolute;left:0;right:0;top:0;text-align:center;backface-visibility:hidden;
-    background:linear-gradient(180deg,#8fd8ff 0%,#f3dc8b 38%,#d4af37 62%,#8fd8ff 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    animation-fill-mode:forwards;
-    filter:drop-shadow(0 0 10px rgba(127,212,255,.35));
+  @keyframes sepBlink{0%,100%{opacity:.55}50%{opacity:.2}}
+  .od-lbl{margin-top:10px;font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+  /* beautification: gold scrollbar, selection, reveal-on-scroll, nav underline */
+  ::-webkit-scrollbar{width:11px}
+  ::-webkit-scrollbar-track{background:var(--black)}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--gold));border-radius:8px;border:2px solid var(--black)}
+  ::selection{background:rgba(212,175,55,.35)}
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+  .nav-links a{position:relative}
+  .nav-links a::before{content:'';position:absolute;left:0;right:100%;bottom:-6px;height:1.5px;background:var(--gold);transition:right .3s ease}
+  .nav-links a:hover::before{right:0}
+  .particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .particles span{
+    position:absolute;bottom:-12px;border-radius:50%;opacity:0;
+    background:radial-gradient(circle, var(--gold-light) 0%, rgba(212,175,55,0) 70%);
+    animation:rise linear infinite;
   }
-  .num{animation:holoShift 7s linear infinite}
-  @keyframes holoShift{0%,100%{filter:hue-rotate(0deg) brightness(1)}45%{filter:hue-rotate(-14deg) brightness(1.12)}55%{filter:hue-rotate(10deg) brightness(.98)}}
-  .roll-in{animation:rollIn .55s cubic-bezier(.2,.75,.3,1) forwards;transform-origin:50% 160%}
-  .roll-out{animation:rollOut .55s cubic-bezier(.6,.1,.8,.4) forwards;transform-origin:50% -60%}
-  @keyframes rollIn{from{transform:translateY(-105%) rotateX(72deg);opacity:0}60%{opacity:1}to{transform:translateY(0) rotateX(0)}}
-  @keyframes rollOut{from{transform:translateY(0) rotateX(0);opacity:1}to{transform:translateY(105%) rotateX(-72deg);opacity:0}}
-  .count-box .lbl{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:6px;position:relative;z-index:2}
+  @keyframes rise{
+    0%{transform:translateY(0) scale(.6);opacity:0}
+    12%{opacity:.85}
+    100%{transform:translateY(-108vh) scale(1.25);opacity:0}
+  }
   #countdown-note{text-align:center;color:var(--muted);margin-top:26px;font-size:.9rem;letter-spacing:.08em}
 
   /* ============ COMMITTEE CAROUSEL (3D coverflow) ============ */
@@ -313,6 +314,10 @@
   .comm-page-body{margin-top:50px}
   .comm-page-body h4{color:var(--gold);font-size:.8rem;letter-spacing:.26em;text-transform:uppercase;margin:30px 0 8px}
   .comm-page-body p{color:var(--muted)}
+  .comm-page-body ul{list-style:none;margin:6px 0 4px;color:var(--muted)}
+  .comm-page-body li{padding-left:26px;position:relative;margin-bottom:7px}
+  .comm-page-body li::before{content:'✦';position:absolute;left:2px;color:var(--gold);font-size:.8em;top:.2em}
+  .comm-page-body ul.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));column-gap:34px}
   .tba{color:var(--gold-deep);font-style:italic}
 
   /* ============ FOOTER ============ */
@@ -404,12 +409,7 @@
     <div class="sec-label">The clock is ticking</div>
     <h2 class="sec-title gold-text">Countdown to the Conclave</h2>
     <hr class="rule">
-    <div id="countdown-grid">
-      <div class="count-box"><div class="num gold-text" id="cd-days">--</div><div class="lbl">Days</div></div>
-      <div class="count-box"><div class="num gold-text" id="cd-hours">--</div><div class="lbl">Hours</div></div>
-      <div class="count-box"><div class="num gold-text" id="cd-mins">--</div><div class="lbl">Minutes</div></div>
-      <div class="count-box"><div class="num gold-text" id="cd-secs">--</div><div class="lbl">Seconds</div></div>
-    </div>
+    <div id="odometer"><!-- digit drums injected by JS --></div>
     <p id="countdown-note">21 August 2026 — mark the date.</p>
   </section>
 
@@ -526,7 +526,32 @@
       about:'[Committee description coming soon.]' },
     { slug:'mercatus',   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
       agenda:'Addressing Youth Unemployment in a Changing Economy',
-      about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.' },
+      about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.',
+      extra:
+        '<h4>Vision</h4>' +
+        '<p>A future-ready, inclusive, and resilient labour market — where every young person finds meaningful employment through collaboration between government, industry, education, and society.</p>' +
+        '<h4>Five Defining Questions</h4>' +
+        '<p>Across five focused sessions, the forum will answer:</p>' +
+        '<ul>' +
+          '<li>Why are young people unemployed?</li>' +
+          '<li>Which sectors can create the jobs of tomorrow?</li>' +
+          '<li>What skills will future employers demand?</li>' +
+          '<li>Which policies can accelerate sustainable employment?</li>' +
+          '<li>How can economic growth remain inclusive for every individual?</li>' +
+        '</ul>' +
+        '<h4>Stakeholders in the Room</h4>' +
+        '<ul class="two-col">' +
+          '<li>Ministry of Labour &amp; Employment / Labour Economists</li>' +
+          '<li>Ministry of Finance</li>' +
+          '<li>Corporate Employees</li>' +
+          '<li>College Students</li>' +
+          '<li>Young Job Seekers</li>' +
+          '<li>Educational Institutions</li>' +
+          '<li>Women Returning to the Workforce</li>' +
+          '<li>Persons with Disabilities Seeking Employment</li>' +
+        '</ul>' +
+        '<h4>Expected Outcome</h4>' +
+        '<p>Stakeholder-driven recommendations that create youth employment, strengthen the education–industry–government bridge, promote inclusive hiring, and build a workforce ready for an evolving global economy.</p>' },
     { slug:'libertas',   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
       agenda:'Bridging India\'s Rural-Urban Divide',
       about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.' },
@@ -549,44 +574,102 @@
       '</div>';
   }
 
-  /* ===== COUNTDOWN (rolling digits) ===== */
+  /* ===== COUNTDOWN — one continuous odometer, digits glide like a reel ===== */
   function pad(n){ return String(n).padStart(2,'0'); }
-  function setGroup(id, str){
-    var box = document.getElementById(id);
-    if (box.children.length !== str.length){        // (re)build digit drums
-      box.innerHTML = '';
+
+  (function buildOdometer(){
+    var groups = [['od-days','Days'],['od-hours','Hours'],['od-mins','Minutes'],['od-secs','Seconds']];
+    var html = '';
+    groups.forEach(function(g, i){
+      if (i) html += '<div class="od-sep">:</div>';
+      html += '<div class="od-group"><div class="od-digits" id="'+g[0]+'"></div><div class="od-lbl">'+g[1]+'</div></div>';
+    });
+    document.getElementById('odometer').innerHTML = html;
+  })();
+
+  function setDigit(d, v, instant){
+    var strip = d.firstChild, cur = +d.dataset.v;
+    if (cur === v && !instant) return;
+    var pos = (!instant && v < cur) ? 10 + v : v;   // wrap 9→0 by rolling into the strip's second half
+    if (instant) strip.style.transition = 'none';
+    strip.style.transform = 'translateY(-' + (pos * 1.1) + 'em)';
+    if (instant){ void strip.offsetHeight; strip.style.transition = ''; }
+    if (pos >= 10){
+      setTimeout(function(){                         // snap back invisibly once the roll lands
+        strip.style.transition = 'none';
+        strip.style.transform = 'translateY(-' + (v * 1.1) + 'em)';
+        void strip.offsetHeight;
+        strip.style.transition = '';
+      }, 850);
+    }
+    d.dataset.v = v;
+  }
+
+  function odSet(id, str){
+    var wrap = document.getElementById(id);
+    if (wrap.children.length !== str.length){        // (re)build drums: cells 0-9 twice for seamless wrap
+      wrap.innerHTML = '';
       for (var i = 0; i < str.length; i++){
-        var d = document.createElement('span');
-        d.className = 'digit';
-        d.dataset.v = str[i];
-        d.innerHTML = '<span class="roll-in">' + str[i] + '</span>';
-        box.appendChild(d);
+        var d = document.createElement('div');
+        d.className = 'od-digit';
+        d.dataset.v = '0';
+        var s = document.createElement('div');
+        s.className = 'od-strip';
+        var cells = '';
+        for (var k = 0; k < 20; k++) cells += '<div class="od-cell gold-text">' + (k % 10) + '</div>';
+        s.innerHTML = cells;
+        d.appendChild(s);
+        wrap.appendChild(d);
+        setDigit(d, +str[i], true);
       }
       return;
     }
-    for (var j = 0; j < str.length; j++){
-      var dg = box.children[j];
-      if (dg.dataset.v !== str[j]){                 // roll old digit out, new one in
-        dg.innerHTML = '<span class="roll-out">' + dg.dataset.v + '</span>' +
-                       '<span class="roll-in">'  + str[j] + '</span>';
-        dg.dataset.v = str[j];
-      }
-    }
+    for (var j = 0; j < str.length; j++) setDigit(wrap.children[j], +str[j]);
   }
+
   function tick(){
     var diff = EVENT_START - new Date();
     if (diff <= 0){
       document.getElementById('countdown-note').textContent = 'The conclave is LIVE!';
-      ['days','hours','mins','secs'].forEach(function(k){ setGroup('cd-'+k,'00'); });
+      ['days','hours','mins','secs'].forEach(function(k){ odSet('od-'+k,'00'); });
       return;
     }
     var s = Math.floor(diff/1000);
-    setGroup('cd-days',  pad(Math.floor(s/86400)));
-    setGroup('cd-hours', pad(Math.floor(s%86400/3600)));
-    setGroup('cd-mins',  pad(Math.floor(s%3600/60)));
-    setGroup('cd-secs',  pad(s%60));
+    odSet('od-days',  pad(Math.floor(s/86400)));
+    odSet('od-hours', pad(Math.floor(s%86400/3600)));
+    odSet('od-mins',  pad(Math.floor(s%3600/60)));
+    odSet('od-secs',  pad(s%60));
   }
   tick(); setInterval(tick, 1000);
+
+  /* ===== REVEAL ON SCROLL + HERO PARTICLES ===== */
+  (function(){
+    var targets = document.querySelectorAll('section .sec-label, section .sec-title, section .rule, #odometer, #countdown-note, .carousel-stage, .car-dots, .car-hint, .dl-card');
+    targets.forEach(function(el){ el.classList.add('reveal'); });
+    function checkReveals(){
+      document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * .92 && r.bottom > 0) el.classList.add('in');
+      });
+    }
+    window.addEventListener('scroll', checkReveals, {passive:true});
+    window.addEventListener('resize', checkReveals);
+    setInterval(checkReveals, 700);   // safety net: reveals fire even if scroll events are swallowed
+    checkReveals();
+
+    var host = document.createElement('div');
+    host.className = 'particles';
+    for (var i = 0; i < 16; i++){
+      var p = document.createElement('span');
+      var size = 3 + Math.random() * 6;
+      p.style.width = p.style.height = size + 'px';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.animationDuration = (9 + Math.random() * 12) + 's';
+      p.style.animationDelay = (-Math.random() * 18) + 's';
+      host.appendChild(p);
+    }
+    document.querySelector('header.hero').appendChild(host);
+  })();
 
   /* ===== CAROUSEL (spherical coverflow) ===== */
   var current = 0;
@@ -660,6 +743,7 @@
         '<div class="comm-page-body">' +
           '<h4>Agenda</h4>' + fieldHTML(c.agenda) +
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
+          (c.extra || '') +
           '<h4>Executive Board</h4><p class="tba">To be announced.</p>' +
           '<h4>Background Guide</h4><p class="tba">Coming soon.</p>' +
         '</div>' +
