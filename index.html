@@ -4,8 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GESYC '26 — Good Earth School Youth Conclave</title>
-<meta name="description" content="GESYC '26 — Good Earth School Youth Conclave. 21 August 2026. Coming Soon.">
+<meta name="description" content="GESYC '26 — Good Earth School Youth Conclave. Six forums, one conclave. 21 August 2026, Chennai. Registrations open!">
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<meta property="og:title" content="GESYC '26 — Good Earth School Youth Conclave">
+<meta property="og:description" content="Six forums. One conclave. 21 August 2026, Chennai. Registrations open!">
+<meta property="og:image" content="https://gesneoforum.com/assets/favicon.png">
+<meta property="og:url" content="https://gesneoforum.com/">
+<meta name="twitter:card" content="summary">
 <link rel="apple-touch-icon" href="assets/favicon.png">
 <style>
   /* ============ THEME: GOLD / BLUE / BLACK ============ */
@@ -365,6 +370,14 @@
   .org-name{font-size:1.12rem;font-weight:800;letter-spacing:.04em}
   .org-role{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-bright);margin-top:6px}
 
+  /* ============ ABOUT ============ */
+  .about-body{margin-top:50px;max-width:820px;margin-left:auto;margin-right:auto}
+  .about-body p{color:var(--muted);margin-bottom:24px;font-size:1.02rem;line-height:1.9}
+  .about-body p:first-of-type::first-letter{
+    font-family:'Cronisse',serif;font-size:3.4em;float:left;line-height:.85;
+    padding:2px 10px 0 0;color:var(--gold);
+  }
+
   /* ============ GALLERY ============ */
   .gal-head{margin-top:56px;font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-align:center}
   .gal-placeholder{
@@ -458,18 +471,18 @@
   <header class="hero" id="home">
     <div class="hero-emblem">
       <div class="ripple-set"><span></span><span></span><span></span></div>
-      <img src="assets/logos/gesyc.png" alt="GESYC '26 emblem"
+      <img src="assets/logos/gesyc_final.png" alt="GESYC '26 emblem"
            onerror="this.remove();document.querySelector('.hero-emblem').insertAdjacentHTML('beforeend','&lt;span class=&quot;fallback gold-text&quot;&gt;G&lt;/span&gt;')">
     </div>
     <div class="hero-school">Good Earth School presents</div>
     <h1 class="gold-text">GESYC <span class="numfont">'26</span></h1>
     <div class="hero-sub">Good Earth School Youth Conclave</div>
-    <div class="coming-soon">Coming Soon</div>
+    <div class="coming-soon">Registrations Open</div>
     <div class="hero-date">21 August 2026 · Chennai</div>
     <div class="register-cta">
       <div class="register-line gold-text">Register for GESYC <span class="numfont">'26</span>!</div>
       <!-- TODO: replace href with the real registration / Google Form link -->
-      <a class="register-btn" href="#" onclick="alert('Registrations opening soon — stay tuned!');return false;">✦ Click Here ✦</a>
+      <a class="register-btn" href="https://forms.gle/k3t41G5XPSVLnBF4A" target="_blank" rel="noopener">✦ Click Here ✦</a>
     </div>
     <div class="scroll-hint">▼ scroll</div>
   </header>
@@ -543,9 +556,11 @@
     <div class="sec-label">The Conclave</div>
     <h2 class="sec-title gold-text">About GESYC</h2>
     <hr class="rule">
-    <div class="placeholder-box">
-      <div class="big gold-text">Under Construction</div>
-      <p>The story of the Good Earth School Youth Conclave is being written. Check back soon.</p>
+    <div class="about-body">
+      <p>The Youth Conclave is a first-of-its-kind platform that empowers young minds to move beyond debate and become active architects of meaningful change. Unlike traditional conferences that often focus on representing nations and defending established policies, this conclave places participants in the roles of key stakeholders: government officials, industry leaders, civil society organizations, scientists, educators, media representatives, and youth advocates. Through this unique approach, delegates collaborate to address real-world challenges from the grassroots level and develop practical, people-centric solutions.</p>
+      <p>Built on the belief that sustainable progress begins with inclusive dialogue, the conclave encourages critical thinking, innovation, leadership, and consensus-building. Participants engage in committee discussions, policy drafting, negotiations, and collaborative problem-solving, gaining firsthand experience of how diverse perspectives contribute to effective governance and societal development.</p>
+      <p>The Youth Conclave seeks to cultivate a generation of informed, empathetic, and action-oriented leaders who understand that lasting change is achieved not through competition, but through cooperation. By bridging ideas with implementation, the conclave transforms passionate students into responsible changemakers capable of shaping a better future for their communities and beyond.</p>
+      <p>More than just a conference, the Youth Conclave is a movement that inspires young people to question, collaborate, innovate, and lead with purpose. It provides a space where every voice matters, every perspective is valued, and every solution has the potential to create a lasting impact.</p>
     </div>
   </div>
 </div>
@@ -603,13 +618,38 @@
 
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
   var COMMITTEES = [
-    { slug:'salutis', eb:['Raeed Aziz Moinudeen','TBD','TBD'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
+    { slug:'salutis', eb:['Raeed Aziz Moinuddin','TBD','TBD'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
       agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
       about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
     { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan','TBD'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
-      agenda:'To be announced.',
-      about:'[Committee description coming soon.]' },
-    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Venkatkumar','TBD'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
+      agenda:'The Green Transition Without Economic Collapse',
+      about:'As the world races to decarbonize, this committee brings together governments, industries, scientists, and communities to pursue climate goals while safeguarding livelihoods, energy security, and equitable economic growth.',
+      extra:
+        '<h4>Vision</h4>' +
+        '<p>A sustainable and economically resilient future — where climate action and prosperity advance together rather than at each other\'s expense.</p>' +
+        '<h4>Five Defining Questions</h4>' +
+        '<p>Across four focused sessions, the forum will answer:</p>' +
+        '<ul>' +
+          '<li>What are the biggest barriers to achieving a green transition without harming economic growth?</li>' +
+          '<li>How can governments balance climate commitments with employment, industrial competitiveness, and energy security?</li>' +
+          '<li>What role should businesses, financial institutions, and technological innovation play in accelerating sustainable development?</li>' +
+          '<li>How can developing economies ensure a just and equitable transition for workers, vulnerable communities, and future generations?</li>' +
+          '<li>What collaborative policy framework can enable a rapid green transition while maintaining economic stability and long-term prosperity?</li>' +
+        '</ul>' +
+        '<h4>Stakeholders in the Room</h4>' +
+        '<ul class="two-col">' +
+          '<li>Government &amp; Climate Policy Authorities</li>' +
+          '<li>Energy &amp; Renewable Power Sector</li>' +
+          '<li>Heavy Industries &amp; Manufacturing</li>' +
+          '<li>Finance, Banking &amp; Green Investment</li>' +
+          '<li>Scientists &amp; Climate Research Institutions</li>' +
+          '<li>Agriculture &amp; Natural Resource Management</li>' +
+          '<li>Environmental NGOs &amp; Civil Society</li>' +
+          '<li>Labour Unions &amp; Workforce Representatives</li>' +
+          '<li>Indigenous &amp; Local Community Representatives</li>' +
+          '<li>International Organizations &amp; Development Partners</li>' +
+        '</ul>' },
+    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Kumar','TBD'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
       agenda:'Addressing Youth Unemployment in a Changing Economy',
       about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.',
       extra:
@@ -637,9 +677,34 @@
         '</ul>' +
         '<h4>Expected Outcome</h4>' +
         '<p>Stakeholder-driven recommendations that create youth employment, strengthen the education–industry–government bridge, promote inclusive hiring, and build a workforce ready for an evolving global economy.</p>' },
-    { slug:'libertas', eb:['Sisubaran Moovendhan','Kavya Dhiriaiviyam','TBD'],   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
-      agenda:'Bridging India\'s Rural-Urban Divide',
-      about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.' },
+    { slug:'libertas', eb:['Sisubaran Moovendhan','Kavya D','TBD'],   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
+      agenda:'Bridging India\'s Urban–Rural Divide',
+      about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.',
+      extra:
+        '<h4>Vision</h4>' +
+        '<p>An inclusive platform where policymakers, educators, community leaders, industry representatives, and citizens collaborate to bridge India\'s urban–rural divide — promoting equitable development, strengthening social cohesion, and preserving the nation\'s rich cultural diversity.</p>' +
+        '<h4>Five Defining Questions</h4>' +
+        '<p>Across four focused sessions, the forum will answer:</p>' +
+        '<ul>' +
+          '<li>What are the root causes behind India\'s persistent urban–rural disparities?</li>' +
+          '<li>How can access to quality education, healthcare, infrastructure and digital connectivity be improved across rural India?</li>' +
+          '<li>How can economic development be achieved without compromising local cultures, traditions and community identities?</li>' +
+          '<li>How can governments, industries and civil society work together to reduce migration pressures and create sustainable opportunities in rural India?</li>' +
+          '<li>What collaborative policy framework can bridge the urban–rural divide while ensuring inclusive, sustainable and culturally sensitive development?</li>' +
+        '</ul>' +
+        '<h4>Stakeholders in the Room</h4>' +
+        '<ul class="two-col">' +
+          '<li>Government &amp; Public Administration</li>' +
+          '<li>Educational Institutions</li>' +
+          '<li>Healthcare &amp; Social Welfare</li>' +
+          '<li>Agriculture &amp; Rural Livelihoods</li>' +
+          '<li>Business, Industry &amp; Entrepreneurship</li>' +
+          '<li>Banking &amp; Financial Inclusion</li>' +
+          '<li>Civil Society &amp; Community Organizations</li>' +
+          '<li>Tribal &amp; Cultural Representatives</li>' +
+          '<li>Media &amp; Communications</li>' +
+          '<li>Infrastructure, Urban Planning &amp; Digital Development</li>' +
+        '</ul>' },
     { slug:'athleticum', eb:['Lohith Tiruvuru','TBD','TBD'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
       agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
       about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.',
@@ -671,11 +736,11 @@
   ];
   /* ===== CORE SECRETARIAT — photos go in assets/organizers/<slug>.jpg ===== */
   var SECRETARIAT = [
-    { slug:'raeed',     name:'Raeed Aziz Moinudeen',   role:'Executive Director' },
+    { slug:'raeed',     name:'Raeed Aziz Moinuddin',   role:'Executive Director' },
     { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Chief Advisor' },
     { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director' },
     { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Head of Delegate Affairs' },
-    { slug:'chaarika',  name:'Chaarika Venkatkumar',   role:'Head of Delegate Affairs' },
+    { slug:'chaarika',  name:'Chaarika Kumar',   role:'Head of Delegate Affairs' },
     { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff' },
     { slug:'kavya',     name:'Kavya D',                role:'Secretary of Conference' },
     { slug:'lohith',    name:'Lohith Tiruvuru',        role:'Director of Photography' }
@@ -869,7 +934,7 @@
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           (c.extra || '') +
           '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return n==='TBD' ? '<li class="tba">To be announced</li>' : '<li>'+n+'</li>';}).join('') + '</ul>' +
-          '<h4>Background Guide</h4><p class="tba">Coming soon.</p>' +
+          '<h4>Background Guide</h4><p><a class="dl-btn" style="margin-top:6px" href="https://drive.google.com/drive/folders/1LzYkxt43jQyG6t4PmbVuah4M5NCsZopm?usp=drive_link" target="_blank" rel="noopener">Open Background Guides ↗</a></p>' +
         '</div>' +
       '</div>';
     pagesWrap.appendChild(div);

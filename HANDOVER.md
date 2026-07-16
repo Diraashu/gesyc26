@@ -31,9 +31,11 @@ nothing to install. Any future team member with a GitHub account can run it.
    named after the old year (`git branch gesyc26-final`) so every year's
    site is preserved forever and can be re-published any time.
 4. **Update content** per the table above; push; the live site updates itself.
-5. **Domain (if bought):** register it with the shared email, enable
-   auto-renew, and keep the registrar login in the handover envelope along
-   with the shared Gmail credentials.
+5. **Domain:** `gesneoforum.com`, registered at GoDaddy (auto-renew ON).
+   DNS: four A records (@ → 185.199.108–111.153) + CNAME www → the GitHub
+   Pages host. The repo's `CNAME` file must always contain `gesneoforum.com`.
+   Keep the GoDaddy login in the handover envelope with the shared Gmail
+   credentials.
 
 ## Rules of thumb
 
