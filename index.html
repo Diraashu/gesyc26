@@ -332,8 +332,19 @@
   .comm-page-body ul.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));column-gap:34px}
   .tba{color:var(--gold-deep);font-style:italic}
 
+  /* numbers keep the normal font — Cronisse is for letters only */
+  .numfont{font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+
   /* ============ ORGANIZERS (Core Secretariat) ============ */
-  .org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:30px;margin-top:54px}
+  .org-top{display:flex;justify-content:center;flex-wrap:wrap;gap:30px;margin-top:54px}
+  .org-top .org-card{flex:0 1 270px}
+  .org-top .org-photo{width:170px;height:170px;border-width:2.5px;box-shadow:0 0 40px rgba(212,175,55,.25)}
+  .org-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:26px;margin-top:34px;position:relative;padding-top:34px}
+  .org-grid::before{ /* branch stem from the leadership row */
+    content:'';position:absolute;top:0;left:50%;width:2px;height:26px;
+    background:linear-gradient(180deg,var(--gold),transparent);
+  }
+  .org-grid .org-card{flex:0 1 235px}
   .org-card{
     text-align:center;padding:34px 20px 28px;border-radius:18px;
     background:var(--card);border:1px solid var(--line);
@@ -352,6 +363,14 @@
   .org-name{font-size:1.12rem;font-weight:800;letter-spacing:.04em}
   .org-role{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-bright);margin-top:6px}
 
+  /* ============ GALLERY ============ */
+  .gal-head{margin-top:56px;font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-align:center}
+  .gal-placeholder{
+    margin-top:20px;padding:60px 20px;text-align:center;border-radius:18px;
+    border:1px dashed var(--line);background:var(--card);
+    color:var(--muted);font-size:.95rem;letter-spacing:.12em;
+  }
+
   /* ============ FOOTER ============ */
   footer{border-top:1px solid var(--line);background:rgba(5,8,15,.9);padding:60px 6vw 30px}
   .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px}
@@ -363,16 +382,30 @@
 
   /* ============ MOBILE ============ */
   @media (max-width:820px){
-    .hamburger{display:block}
+    .hamburger{display:block;position:relative;z-index:130}
+    /* side drawer: slides in from the right */
     .nav-links{
-      position:fixed;top:60px;right:0;left:0;flex-direction:column;gap:0;
-      background:rgba(5,8,15,.97);border-bottom:1px solid var(--line);
-      max-height:0;overflow:hidden;transition:max-height .35s ease;
+      position:fixed;top:0;right:0;bottom:0;left:auto;
+      width:min(320px,82vw);height:100vh;height:100dvh;
+      flex-direction:column;gap:0;align-items:stretch;
+      background:linear-gradient(200deg,#0a1430,#05080f 65%);
+      border-left:1px solid var(--line);
+      box-shadow:-25px 0 60px rgba(0,0,0,.6);
+      padding:84px 0 40px;overflow-y:auto;
+      transform:translateX(105%);transition:transform .35s cubic-bezier(.25,.75,.3,1);
+      z-index:120;
     }
-    .nav-links.open{max-height:480px}
-    .nav-links li{width:100%;text-align:center;padding:14px 0;border-top:1px solid rgba(212,175,55,.08)}
+    .nav-links.open{transform:translateX(0)}
+    .nav-links li{width:100%;text-align:left;border-top:1px solid rgba(212,175,55,.08)}
+    .nav-links li > a{display:block;padding:17px 30px;font-size:.95rem}
+    .nav-links a::before{display:none}
+    .drawer-veil{
+      position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+      opacity:0;pointer-events:none;transition:opacity .3s;z-index:110;
+    }
+    .nav-links.open ~ .drawer-veil, body.drawer-open .drawer-veil{opacity:1;pointer-events:auto}
     .dropdown-panel{position:static;width:100%;opacity:1;visibility:visible;transform:none;
-      display:none;border-radius:0;border-left:0;border-right:0;text-align:left}
+      display:none;border-radius:0;border-left:0;border-right:0;text-align:left;box-shadow:none}
     .dropdown.open .dropdown-panel{display:block}
     .carousel-stage{height:500px}
     .car-arrow.prev{left:2px}
@@ -385,13 +418,14 @@
 
 <!-- ==================== NAV ==================== -->
 <nav>
-  <a href="#/" class="nav-brand gold-text">GESYC&nbsp;'26</a>
-  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <a href="#/" class="nav-brand gold-text">GESYC&nbsp;<span class="numfont">'26</span></a>
+  <button class="hamburger" aria-label="Menu" onclick="toggleMenu()">☰</button>
   <ul class="nav-links">
     <li><a href="#/">Home</a></li>
     <li><a href="#/about">About GESYC</a></li>
     <li><a href="#/" onclick="scrollAfterNav('committees')">Committees</a></li>
     <li><a href="#/organizers">Organizers</a></li>
+    <li><a href="#/gallery">Gallery</a></li>
     <li class="dropdown" onclick="if(window.innerWidth<=820)this.classList.toggle('open')">
       <a href="#" onclick="event.preventDefault()">Contact Us</a>
       <div class="dropdown-panel">
@@ -413,6 +447,7 @@
       </div>
     </li>
   </ul>
+  <div class="drawer-veil" onclick="toggleMenu(false)"></div>
 </nav>
 
 <!-- ==================== PAGE: HOME ==================== -->
@@ -425,12 +460,12 @@
            onerror="this.remove();document.querySelector('.hero-emblem').insertAdjacentHTML('beforeend','&lt;span class=&quot;fallback gold-text&quot;&gt;G&lt;/span&gt;')">
     </div>
     <div class="hero-school">Good Earth School presents</div>
-    <h1 class="gold-text">GESYC '26</h1>
+    <h1 class="gold-text">GESYC <span class="numfont">'26</span></h1>
     <div class="hero-sub">Good Earth School Youth Conclave</div>
     <div class="coming-soon">Coming Soon</div>
     <div class="hero-date">21 August 2026 · Chennai</div>
     <div class="register-cta">
-      <div class="register-line gold-text">Register for GESYC '26!</div>
+      <div class="register-line gold-text">Register for GESYC <span class="numfont">'26</span>!</div>
       <!-- TODO: replace href with the real registration / Google Form link -->
       <a class="register-btn" href="#" onclick="alert('Registrations opening soon — stay tuned!');return false;">✦ Click Here ✦</a>
     </div>
@@ -468,20 +503,19 @@
         <div class="dl-icon">📜</div>
         <h3 class="gold-text">Brochure</h3>
         <p>Everything about GESYC '26 in one document.</p>
-        <!-- When ready: replace badge with <a class="dl-btn" href="assets/docs/brochure.pdf" download>Download</a> -->
-        <span class="dl-badge">Coming Soon</span>
+        <a class="dl-btn" href="https://drive.google.com/drive/folders/1YrefSWPFHMG3A0OuhnddRNuXEIrMMGVi?usp=drive_link" target="_blank" rel="noopener">Open &#8599;</a>
       </div>
       <div class="dl-card">
         <div class="dl-icon">🌍</div>
         <h3 class="gold-text">Country Matrix</h3>
         <p>Committee-wise country &amp; portfolio allocations.</p>
-        <span class="dl-badge">Coming Soon</span>
+        <a class="dl-btn" href="https://docs.google.com/spreadsheets/d/1F16MZfU7gfMP_Rg1GMSewymGjmI3LsbW34SUh730AmY/edit?usp=sharing" target="_blank" rel="noopener">Open &#8599;</a>
       </div>
       <div class="dl-card">
         <div class="dl-icon">📖</div>
         <h3 class="gold-text">Background Guides</h3>
         <p>Study guides for every forum's agenda.</p>
-        <span class="dl-badge">Coming Soon</span>
+        <a class="dl-btn" href="https://drive.google.com/drive/folders/1LzYkxt43jQyG6t4PmbVuah4M5NCsZopm?usp=drive_link" target="_blank" rel="noopener">Open &#8599;</a>
       </div>
     </div>
   </section>
@@ -495,6 +529,7 @@
     <div class="sec-label">The people behind GESYC</div>
     <h2 class="sec-title gold-text">Core Secretariat</h2>
     <hr class="rule">
+    <div class="org-top" id="org-top"><!-- leadership row injected by JS --></div>
     <div class="org-grid" id="org-grid"><!-- cards injected by JS --></div>
   </div>
 </div>
@@ -513,6 +548,25 @@
   </div>
 </div>
 
+<!-- ==================== PAGE: GALLERY ==================== -->
+<div class="page" id="page-gallery">
+  <div class="subpage">
+    <a class="back-link" href="#/">← Back to Home</a>
+    <div class="sec-label">Through the years</div>
+    <h2 class="sec-title gold-text">Gallery</h2>
+    <hr class="rule">
+
+    <h3 class="gal-head gold-text">GESMUN INTRA <span class="numfont">'25</span></h3>
+    <div class="gal-placeholder">📸 Photos incoming…</div>
+
+    <h3 class="gal-head gold-text">GESMUN <span class="numfont">'24</span></h3>
+    <div class="gal-placeholder">📸 Photos incoming…</div>
+
+    <h3 class="gal-head gold-text">GESMUN <span class="numfont">'23</span></h3>
+    <div class="gal-placeholder">📸 Photos incoming…</div>
+  </div>
+</div>
+
 <!-- ==================== PAGES: COMMITTEES (injected by JS) ==================== -->
 <div id="committee-pages"></div>
 
@@ -520,7 +574,7 @@
 <footer>
   <div class="footer-grid">
     <div>
-      <h4>GESYC '26</h4>
+      <h4>GESYC <span class="numfont">'26</span></h4>
       <p>Good Earth School Youth Conclave<br>21 August 2026</p>
     </div>
     <div>
@@ -547,13 +601,13 @@
 
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
   var COMMITTEES = [
-    { slug:'salutis', eb:['Raeed Aziz Moinudeen','Lemula Renita'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
+    { slug:'salutis', eb:['Raeed Aziz Moinudeen','TBD','TBD'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
       agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
       about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
-    { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
+    { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan','TBD'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
       agenda:'To be announced.',
       about:'[Committee description coming soon.]' },
-    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Venkatkumar'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
+    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Venkatkumar','TBD'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
       agenda:'Addressing Youth Unemployment in a Changing Economy',
       about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.',
       extra:
@@ -581,13 +635,35 @@
         '</ul>' +
         '<h4>Expected Outcome</h4>' +
         '<p>Stakeholder-driven recommendations that create youth employment, strengthen the education–industry–government bridge, promote inclusive hiring, and build a workforce ready for an evolving global economy.</p>' },
-    { slug:'libertas', eb:['Sisubaran Moovendhan','Kavya Dhiriaiviyam'],   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
+    { slug:'libertas', eb:['Sisubaran Moovendhan','Kavya Dhiriaiviyam','TBD'],   name:'Forum Libertas & Cultura',   tag:'Human Rights & Culture',  letter:'L',
       agenda:'Bridging India\'s Rural-Urban Divide',
       about:'As India continues to urbanize, this committee brings together diverse stakeholders to address the economic, social, and infrastructural gaps between rural and urban regions while building policies that ensure equitable opportunities for all citizens.' },
-    { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
+    { slug:'athleticum', eb:['Lohith Tiruvuru','TBD','TBD'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
       agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
-      about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.' },
-    { slug:'veritas', eb:['Haasini Kandalam','Devmilanie Dhakshayine'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
+      about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.',
+      extra:
+        '<h4>Vision</h4>' +
+        '<p>A future-ready, inclusive, and resilient youth fitness ecosystem — where every student has access to structured sports education through collaboration between government policymakers, school administrators, physical educators, and industry partners.</p>' +
+        '<h4>Four Defining Questions</h4>' +
+        '<p>Across four focused sessions, the forum will answer:</p>' +
+        '<ul>' +
+          '<li>How can space-constrained schools fulfil sports mandates without losing board affiliation?</li>' +
+          '<li>What legal guardrails are needed to safely fund sports facilities via public-private partnerships?</li>' +
+          '<li>How do we implement compulsory sports grading without penalizing non-athletic or disabled students?</li>' +
+          '<li>Which emergency safety protocols must be established to protect students during severe environmental crises?</li>' +
+        '</ul>' +
+        '<h4>Stakeholders in the Room</h4>' +
+        '<ul class="two-col">' +
+          '<li>Ministry of Youth Affairs &amp; Sports / Sports Authority of India</li>' +
+          '<li>Ministry of Education (School Education &amp; Literacy)</li>' +
+          '<li>Central School Boards (CBSE &amp; CISCE)</li>' +
+          '<li>Budget Private Schools</li>' +
+          '<li>Government Central Schools</li>' +
+          '<li>All India Physical Education Teachers&#39; &amp; Coaches&#39; Association</li>' +
+          '<li>Medical Experts (Indian Academy of Pediatrics) / Sports Law India</li>' +
+          '<li>Corporate Sports Academies &amp; EdTech Firms</li>' +
+        '</ul>' },
+    { slug:'veritas', eb:['TBD','TBD','TBD'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
       agenda:'Classified…',
       about:'In a world where information shapes opinions and influences decisions, the press holds the power to inform, inspire, and drive change. This committee brings together passionate voices from media, journalism, and communication to uphold the principles of truth, integrity, and accountability in the pursuit of responsible and ethical reporting.' }
   ];
@@ -599,9 +675,14 @@
     { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Head of Delegate Affairs' },
     { slug:'chaarika',  name:'Chaarika Venkatkumar',   role:'Head of Delegate Affairs' },
     { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff' },
-    { slug:'kavya',     name:'Kavya Dhiriaiviyam',     role:'Secretary of Conference' },
+    { slug:'kavya',     name:'Kavya D',                role:'Secretary of Conference' },
     { slug:'lohith',    name:'Lohith Tiruvuru',        role:'Director of Photography' }
   ];
+
+  // Cronisse is letters-only: digits & special chars fall back to the normal font
+  function fixChars(str){
+    return str.replace(/([0-9&'’!@#%\/+*=<>]+)/g, '<span class="numfont">$1</span>');
+  }
 
   function fieldHTML(text){
     var placeholder = text.charAt(0) === '[' || text.indexOf('To be announced') === 0;
@@ -722,8 +803,8 @@
     card.className = 'car-card';
     card.innerHTML =
       logoHTML(c,'car-logo') +
-      '<div class="car-name gold-text">'+c.name+'</div>' +
-      '<div class="car-tag">'+c.tag+'</div>' +
+      '<div class="car-name gold-text">'+fixChars(c.name)+'</div>' +
+      '<div class="car-tag">'+fixChars(c.tag)+'</div>' +
       '<a class="know-more" href="#/committee/'+c.slug+'" onclick="event.stopPropagation()">Know More</a>';
     card.addEventListener('click', function(){ if(i!==current){ current=i; renderCarousel(); } });
     stage.appendChild(card);
@@ -778,32 +859,51 @@
         '<a class="back-link" href="#/" onclick="scrollAfterNav(\'committees\')">← Back to Committees</a>' +
         '<div class="comm-page-head">' +
           logoHTML(c,'comm-page-logo').replace('">','"><div class="ripple-set small"><span></span><span></span><span></span></div>') +
-          '<div><div class="comm-page-title gold-text">'+c.name+'</div>' +
-          '<div class="comm-page-tag">'+c.tag+'</div></div>' +
+          '<div><div class="comm-page-title gold-text">'+fixChars(c.name)+'</div>' +
+          '<div class="comm-page-tag">'+fixChars(c.tag)+'</div></div>' +
         '</div>' +
         '<div class="comm-page-body">' +
           '<h4>Agenda</h4>' + fieldHTML(c.agenda) +
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           (c.extra || '') +
-          '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return '<li>'+n+'</li>';}).join('') + '</ul>' +
+          '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return n==='TBD' ? '<li class="tba">To be announced</li>' : '<li>'+n+'</li>';}).join('') + '</ul>' +
           '<h4>Background Guide</h4><p class="tba">Coming soon.</p>' +
         '</div>' +
       '</div>';
     pagesWrap.appendChild(div);
   });
 
-  /* ===== ORGANIZERS PAGE ===== */
-  document.getElementById('org-grid').innerHTML = SECRETARIAT.map(function(o){
-    var initials = o.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
-    return '<div class="org-card">' +
-      '<div class="org-photo">' +
-        '<img src="assets/organizers/'+o.slug+'.jpg" alt="'+o.name+'" ' +
-        'onerror="this.outerHTML=\'<span class=&quot;fallback gold-text&quot;>'+initials+'</span>\'">' +
-      '</div>' +
-      '<div class="org-name gold-text">'+o.name+'</div>' +
-      '<div class="org-role">'+o.role+'</div>' +
-    '</div>';
-  }).join('');
+  /* ===== ORGANIZERS PAGE — leadership row on top, the pack below ===== */
+  function orgCard(o){
+    var card  = document.createElement('div'); card.className = 'org-card';
+    var photo = document.createElement('div'); photo.className = 'org-photo';
+    var img   = document.createElement('img');
+    img.alt = o.name;
+    img.src = 'assets/organizers/' + o.slug + '.jpg';
+    img.onerror = function(){
+      if (/\.jpg$/.test(img.src)){                  // no .jpg? try .png before giving up
+        img.src = img.src.replace(/\.jpg$/, '.png');
+      } else {
+        var span = document.createElement('span');
+        span.className = 'fallback gold-text';
+        span.textContent = o.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+        photo.replaceChild(span, img);
+      }
+    };
+    photo.appendChild(img);
+    var nm = document.createElement('div'); nm.className = 'org-name gold-text'; nm.textContent = o.name;
+    var rl = document.createElement('div'); rl.className = 'org-role'; rl.textContent = o.role;
+    card.appendChild(photo); card.appendChild(nm); card.appendChild(rl);
+    return card;
+  }
+  var ORG_TOP = ['raeed','kavya','mridula'];   // Secretary of Conference centre, Executive Directors either side
+  var topWrap = document.getElementById('org-top'), packWrap = document.getElementById('org-grid');
+  ORG_TOP.forEach(function(slug){
+    topWrap.appendChild(orgCard(SECRETARIAT.filter(function(o){return o.slug===slug;})[0]));
+  });
+  SECRETARIAT.forEach(function(o){
+    if (ORG_TOP.indexOf(o.slug) === -1) packWrap.appendChild(orgCard(o));
+  });
 
   /* ===== HASH ROUTER ===== */
   function route(){
@@ -811,17 +911,25 @@
     var id = 'page-home';
     if (h === '#/organizers') id = 'page-organizers';
     else if (h === '#/about') id = 'page-about';
+    else if (h === '#/gallery') id = 'page-gallery';
     else if (h.indexOf('#/committee/') === 0){
       var slug = h.split('/')[2];
       if (document.getElementById('page-committee-'+slug)) id = 'page-committee-'+slug;
     }
     document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
     document.getElementById(id).classList.add('active');
-    document.querySelector('.nav-links').classList.remove('open');
+    toggleMenu(false);
     if (!pendingScroll) window.scrollTo(0,0);
+  }
+  function toggleMenu(force){
+    var n = document.querySelector('.nav-links');
+    var open = (force === undefined) ? !n.classList.contains('open') : force;
+    n.classList.toggle('open', open);
+    document.querySelector('.hamburger').textContent = open ? '✕' : '☰';
   }
   var pendingScroll = null;
   function scrollAfterNav(sectionId){
+    toggleMenu(false);
     pendingScroll = sectionId;
     setTimeout(function(){
       var el = document.getElementById(pendingScroll);
