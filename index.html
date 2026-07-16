@@ -349,25 +349,29 @@
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:300px;height:300px;display:flex;align-items:center;justify-content:center;
   }
-  .pentagon-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .penta{fill:none;transform-origin:100px 100px}
-  .penta.p1{
-    stroke:var(--gold);stroke-width:1.6;
-    filter:drop-shadow(0 0 10px rgba(212,175,55,.55));
-    animation:pentaSpin 36s linear infinite, pentaGlow 4s ease-in-out infinite;
+  .circle-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .ring{fill:none;transform-origin:100px 100px}
+  .ring.r1{
+    stroke:var(--gold);stroke-width:1.6;stroke-dasharray:42 16;stroke-linecap:round;
+    animation:ringSpin 28s linear infinite, ringGlow 4s ease-in-out infinite;
   }
-  .penta.p2{
-    stroke:var(--blue-bright);stroke-width:1;opacity:.55;
-    animation:pentaSpin 24s linear infinite reverse;
+  .ring.r2{
+    stroke:var(--blue-bright);stroke-width:1;stroke-dasharray:4 12;stroke-linecap:round;opacity:.6;
+    animation:ringSpin 18s linear infinite reverse;
   }
-  .penta.p3{
-    stroke:var(--gold-deep);stroke-width:.8;stroke-dasharray:7 9;opacity:.7;
-    animation:pentaSpin 55s linear infinite;
+  .ring.r3{
+    stroke:var(--gold-deep);stroke-width:.8;stroke-dasharray:2 7;opacity:.75;
+    animation:ringSpin 48s linear infinite;
   }
-  @keyframes pentaSpin{to{transform:rotate(360deg)}}
-  @keyframes pentaGlow{
+  @keyframes ringSpin{to{transform:rotate(360deg)}}
+  @keyframes ringGlow{
     0%,100%{filter:drop-shadow(0 0 8px rgba(212,175,55,.4))}
     50%{filter:drop-shadow(0 0 22px rgba(212,175,55,.85))}
+  }
+  .orbit-track{ /* the ring the members ride on */
+    position:absolute;left:50%;top:50%;width:640px;height:640px;
+    margin:-320px 0 0 -320px;border-radius:50%;
+    border:1px dashed rgba(212,175,55,.18);pointer-events:none;
   }
   .core-title{
     position:relative;z-index:2;text-align:center;
@@ -380,8 +384,6 @@
     position:absolute;width:170px;text-align:center;
     left:calc(50% + var(--x));top:calc(50% + var(--y));
     transform:translate(-50%,-50%);
-    animation:bob 5s ease-in-out infinite;
-    animation-delay:var(--d);
   }
   .core-photo{
     width:112px;height:112px;border-radius:50%;margin:0 auto 12px;overflow:hidden;
@@ -396,10 +398,11 @@
   .core-photo .fallback{font-size:1.8rem;font-weight:800}
   .org-name{font-size:.98rem;font-weight:800;letter-spacing:.04em}
   .org-role{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue-bright);margin-top:4px}
-  @media (max-width:980px){ /* orbit collapses to pentagon on top + flowing grid */
+  @media (max-width:980px){ /* orbit collapses to circle emblem on top + flowing grid */
     .core-stage{height:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:30px;padding-top:10px}
     .core-center{position:relative;left:auto;top:auto;transform:none;flex-basis:100%;height:280px}
     .core-node{position:static;transform:none;flex:0 1 150px}
+    .orbit-track{display:none}
   }
 
   /* ============ ABOUT ============ */
@@ -577,13 +580,14 @@
     <div class="core-stage" id="core-stage">
       <div class="core-center">
         <div class="ripple-set"><span></span><span></span><span></span></div>
-        <svg class="pentagon-svg" viewBox="0 0 200 200" aria-hidden="true">
-          <polygon class="penta p3" points="100,2 193.2,69.7 157.6,179.3 42.4,179.3 6.8,69.7"/>
-          <polygon class="penta p1" points="100,10 185.6,72.2 152.9,172.8 47.1,172.8 14.4,72.2"/>
-          <polygon class="penta p2" points="100,28 168.5,77.8 142.3,158.3 57.7,158.3 31.5,77.8"/>
+        <svg class="circle-svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring r3" cx="100" cy="100" r="98"/>
+          <circle class="ring r1" cx="100" cy="100" r="88"/>
+          <circle class="ring r2" cx="100" cy="100" r="72"/>
         </svg>
         <div class="core-title">THE<br>CORE</div>
       </div>
+      <div class="orbit-track" aria-hidden="true"></div>
       <!-- member nodes injected by JS -->
     </div>
   </div>
@@ -995,15 +999,12 @@
   ];
   (function(){
     var stage = document.getElementById('core-stage');
-    var RX = 335, RY = 300;                       // orbit radii (px from centre)
-    CORE_ORBIT.forEach(function(pair, i){
+    var R = 320;                                   // orbit radius (px from centre)
+    var orbiters = [];
+    CORE_ORBIT.forEach(function(pair){
       var o = SECRETARIAT.filter(function(m){return m.slug === pair[0];})[0];
-      var a = pair[1] * Math.PI / 180;
       var node = document.createElement('div');
       node.className = 'core-node';
-      node.style.setProperty('--x', Math.round(RX * Math.cos(a)) + 'px');
-      node.style.setProperty('--y', Math.round(RY * Math.sin(a)) + 'px');
-      node.style.setProperty('--d', (i * .55) + 's');
       var photo = document.createElement('div'); photo.className = 'core-photo';
       var img = document.createElement('img');
       img.alt = o.name;
@@ -1019,7 +1020,39 @@
       var rl = document.createElement('div'); rl.className = 'org-role'; rl.textContent = o.role;
       node.appendChild(photo); node.appendChild(nm); node.appendChild(rl);
       stage.appendChild(node);
+      orbiters.push({ el: node, a0: pair[1] * Math.PI / 180 });
     });
+
+    function place(offset){
+      orbiters.forEach(function(n){
+        var a = n.a0 + offset;
+        n.el.style.setProperty('--x', (R * Math.cos(a)).toFixed(1) + 'px');
+        n.el.style.setProperty('--y', (R * Math.sin(a)).toFixed(1) + 'px');
+      });
+    }
+    place(0);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // slow revolution: one lap every 90s; eases to near-stop on hover so names stay readable
+    var SPEED = 2 * Math.PI / 90;
+    var factor = 1, targetFactor = 1, offset = 0, last = null, rafOk = false;
+    stage.addEventListener('mouseenter', function(){ targetFactor = .08; });
+    stage.addEventListener('mouseleave', function(){ targetFactor = 1; });
+    function tick(ts){
+      if (last !== null){
+        var dt = Math.min((ts - last) / 1000, .1);
+        factor += (targetFactor - factor) * Math.min(1, dt * 3);
+        offset += SPEED * factor * dt;
+        place(offset);
+      }
+      last = ts;
+    }
+    function rafLoop(ts){ rafOk = true; tick(ts); requestAnimationFrame(rafLoop); }
+    requestAnimationFrame(rafLoop);
+    setTimeout(function(){   // embedded/hidden contexts can suspend rAF — fall back to a timer
+      if (!rafOk) setInterval(function(){ tick(performance.now()); }, 50);
+    }, 1500);
   })();
 
   /* ===== HASH ROUTER ===== */
