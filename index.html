@@ -38,8 +38,8 @@
   .placeholder-box .big,.od-lbl,.org-name,.org-role,.core-title{
     font-family:'Cronisse','Segoe UI',serif;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth;overflow-x:hidden}
   body{
     font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
     background:
@@ -394,6 +394,36 @@
     transition:transform .3s, box-shadow .3s;
   }
   .core-node:hover .core-photo{transform:scale(1.12);box-shadow:0 0 45px rgba(212,175,55,.5)}
+  .core-node{z-index:1}
+  .core-node:hover{z-index:60}
+  .core-inner{transition:transform .5s cubic-bezier(.2,.85,.25,1.18)}
+  .core-node:hover .core-inner{transform:translateY(-18px)}
+  .core-quote{ /* the member's quote — blooms in on hover */
+    position:absolute;left:50%;top:100%;width:250px;
+    transform:translate(-50%,2px) scale(.82);transform-origin:top center;
+    padding:16px 18px 15px;border-radius:14px;
+    background:linear-gradient(180deg,rgba(16,37,78,.94),rgba(5,8,15,.97));
+    border:1px solid var(--gold);
+    box-shadow:0 18px 50px rgba(0,0,0,.65), 0 0 35px rgba(212,175,55,.28);
+    font-size:.82rem;font-style:italic;color:var(--ink);line-height:1.6;text-align:center;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .4s ease, transform .55s cubic-bezier(.2,.9,.3,1.25), visibility .4s;
+  }
+  .core-quote::before{
+    content:'\275D';display:block;font-style:normal;
+    font-size:1.6rem;line-height:1;margin-bottom:8px;
+    background:linear-gradient(120deg,var(--gold-deep),var(--gold-light),var(--gold-deep));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .core-quote::after{ /* gold shimmer edge */
+    content:'';position:absolute;inset:-1px;border-radius:14px;padding:1px;
+    background:linear-gradient(120deg,transparent 20%,rgba(243,220,139,.9),transparent 80%);
+    background-size:250% auto;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    animation:shimmer 2.6s linear infinite;pointer-events:none;
+  }
+  .core-node:hover .core-quote{opacity:1;visibility:visible;transform:translate(-50%,14px) scale(1)}
   .core-photo img{width:100%;height:100%;object-fit:cover}
   .core-photo .fallback{font-size:1.8rem;font-weight:800}
   .org-name{font-size:.98rem;font-weight:800;letter-spacing:.04em}
@@ -496,6 +526,20 @@
     .about-body p{font-size:.95rem;line-height:1.8}
     .gal-head{margin-top:44px}
     footer{padding:44px 6vw 24px}
+
+    /* --- phone smoothness: kill the expensive effects, lock side-scroll --- */
+    nav{padding:12px 16px;backdrop-filter:none;background:rgba(5,8,15,.96)}
+    body{overflow-x:clip}
+    .particles{display:none}
+    .carousel-stage{overflow:hidden}
+    .carousel-stage > .ripple-set{display:none}
+    .car-card{transition:transform .4s ease, opacity .4s ease}
+    .ring.r1{animation:ringSpin 28s linear infinite}   /* drop the animated glow filter */
+    .hero-emblem img{animation:none;filter:drop-shadow(0 0 20px rgba(212,175,55,.3))}
+    .register-btn{animation:none;box-shadow:0 0 24px rgba(212,175,55,.45)}
+    .od-sep{animation:none;opacity:.45}
+    .core-quote{display:none}
+    .core-inner{transition:none}
   }
 </style>
 </head>
@@ -552,7 +596,7 @@
     <div class="register-cta">
       <div class="register-line gold-text">Register for GESYC <span class="numfont">'26</span></div>
       <!-- TODO: replace href with the real registration / Google Form link -->
-      <a class="register-btn" href="https://forms.gle/k3t41G5XPSVLnBF4A" target="_blank" rel="noopener">✦ Click Here ✦</a>
+      <a class="register-btn" href="https://forms.gle/xqLrEKWWoZKL8P7g8" target="_blank" rel="noopener">✦ Click Here ✦</a>
     </div>
     <div class="scroll-hint">▼ scroll</div>
   </header>
@@ -584,19 +628,19 @@
     <h2 class="sec-title gold-text">Essential Downloads</h2>
     <hr class="rule">
     <div class="downloads-row">
-      <a class="dl-card" href="https://drive.google.com/drive/folders/1YrefSWPFHMG3A0OuhnddRNuXEIrMMGVi?usp=drive_link" target="_blank" rel="noopener">
+      <a class="dl-card" href="https://drive.google.com/drive/folders/1XOmaQCMIFWZAUKYNkYBtmQKL7RCucCGr?usp=drive_link" target="_blank" rel="noopener">
         <div class="dl-icon">📜</div>
         <h3 class="gold-text">Brochure</h3>
         <p>Everything about GESYC '26 in one document.</p>
         <span class="dl-btn">Open &#8599;</span>
       </a>
-      <a class="dl-card" href="https://docs.google.com/spreadsheets/d/1F16MZfU7gfMP_Rg1GMSewymGjmI3LsbW34SUh730AmY/edit?usp=sharing" target="_blank" rel="noopener">
+      <a class="dl-card" href="https://drive.google.com/drive/folders/1ik1sFzzzF5nRDG22nWz_xKumxV4EIDK2?usp=drive_link" target="_blank" rel="noopener">
         <div class="dl-icon">🧭</div>
-        <h3 class="gold-text">Allocations Matrix</h3>
+        <h3 class="gold-text">Allocation Matrix</h3>
         <p>Committee-wise stakeholder allocations.</p>
         <span class="dl-btn">Open &#8599;</span>
       </a>
-      <a class="dl-card" href="https://drive.google.com/drive/folders/1LzYkxt43jQyG6t4PmbVuah4M5NCsZopm?usp=drive_link" target="_blank" rel="noopener">
+      <a class="dl-card" href="https://drive.google.com/drive/folders/1Zcf-Ri-wi05aqdNrw25M9NUH_mfp7-du?usp=drive_link" target="_blank" rel="noopener">
         <div class="dl-icon">📖</div>
         <h3 class="gold-text">Background Guides</h3>
         <p>Study guides for every forum's agenda.</p>
@@ -698,7 +742,7 @@
 
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
   var COMMITTEES = [
-    { slug:'salutis', eb:['Raeed Aziz Moinuddin','TBD','TBD'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
+    { slug:'salutis', eb:['Raeed Aziz Moinuddin','Lemula Renita','TBD'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
       agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
       about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
     { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan','TBD'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
@@ -785,7 +829,7 @@
           '<li>Media &amp; Communications</li>' +
           '<li>Infrastructure, Urban Planning &amp; Digital Development</li>' +
         '</ul>' },
-    { slug:'athleticum', eb:['Lohith Tiruvuru','TBD','TBD'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
+    { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan','TBD'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
       agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
       about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.',
       extra:
@@ -810,20 +854,28 @@
           '<li>Medical Experts (Indian Academy of Pediatrics) / Sports Law India</li>' +
           '<li>Corporate Sports Academies &amp; EdTech Firms</li>' +
         '</ul>' },
-    { slug:'veritas', eb:['TBD','TBD','TBD'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
+    { slug:'veritas', eb:['Haasini K','Sudharshini','Raphael Wellington','TBD'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
       agenda:'Classified…',
       about:'In a world where information shapes opinions and influences decisions, the press holds the power to inform, inspire, and drive change. This committee brings together passionate voices from media, journalism, and communication to uphold the principles of truth, integrity, and accountability in the pursuit of responsible and ethical reporting.' }
   ];
   /* ===== CORE SECRETARIAT — photos go in assets/organizers/<slug>.jpg ===== */
   var SECRETARIAT = [
-    { slug:'raeed',     name:'Raeed Aziz Moinuddin',   role:'Executive Director' },
-    { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Chief Advisor' },
-    { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director' },
-    { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Head of Delegate Affairs' },
-    { slug:'chaarika',  name:'Chaarika Kumar',   role:'Head of Delegate Affairs' },
-    { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff' },
-    { slug:'kavya',     name:'Kavya D',                role:'Secretary of Conference' },
-    { slug:'lohith',    name:'Lohith Tiruvuru',        role:'Director of Photography' }
+    { slug:'raeed',     name:'Raeed Aziz Moinuddin',   role:'Executive Director',
+      quote:'Ideas are forms of conformism; don\'t come here with an idea.' },
+    { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Chief Advisor',
+      quote:'I don\'t play the odds. I play the man.' },
+    { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director',
+      quote:'Everything is neutral until you give it meaning. Choosing to be apolitical gives neutrality the meaning of cowardice.' },
+    { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Conference Manager',
+      quote:'It\'s going to happen because I am going to make it happen.' },
+    { slug:'chaarika',  name:'Chaarika Kumar',   role:'Conference Manager',
+      quote:'The world is yours.' },
+    { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff',
+      quote:'Impossible is a word found only in the dictionary of fools, not mine.' },
+    { slug:'kavya',     name:'Kavya D',                role:'Secretary of Conference',
+      quote:'This quote is too important to mess up, so I\'m playing it safe.' },
+    { slug:'lohith',    name:'Lohith Tiruvuru',        role:'Director of Photography',
+      quote:'Good speaks, greatness is spoken of.' }
   ];
 
   // Cronisse is letters-only: digits & special chars fall back to the normal font
@@ -1014,7 +1066,7 @@
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           (c.extra || '') +
           '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return n==='TBD' ? '<li class="tba">To be announced</li>' : '<li>'+n+'</li>';}).join('') + '</ul>' +
-          '<h4>Background Guide</h4><p><a class="dl-btn" style="margin-top:6px" href="https://drive.google.com/drive/folders/1LzYkxt43jQyG6t4PmbVuah4M5NCsZopm?usp=drive_link" target="_blank" rel="noopener">Open Background Guides ↗</a></p>' +
+          '<h4>Background Guide</h4><p><a class="dl-btn" style="margin-top:6px" href="https://drive.google.com/drive/folders/1Zcf-Ri-wi05aqdNrw25M9NUH_mfp7-du?usp=drive_link" target="_blank" rel="noopener">Open Background Guides ↗</a></p>' +
         '</div>' +
       '</div>';
     pagesWrap.appendChild(div);
@@ -1053,7 +1105,14 @@
       photo.appendChild(img);
       var nm = document.createElement('div'); nm.className = 'org-name gold-text'; nm.textContent = o.name;
       var rl = document.createElement('div'); rl.className = 'org-role'; rl.textContent = o.role;
-      node.appendChild(photo); node.appendChild(nm); node.appendChild(rl);
+      var inner = document.createElement('div'); inner.className = 'core-inner';
+      inner.appendChild(photo); inner.appendChild(nm); inner.appendChild(rl);
+      node.appendChild(inner);
+      if (o.quote){
+        var q = document.createElement('div'); q.className = 'core-quote';
+        q.textContent = o.quote;
+        node.appendChild(q);
+      }
       stage.appendChild(node);
       orbiters.push({ el: node, a0: pair[1] * Math.PI / 180 });
     });
@@ -1068,11 +1127,12 @@
     place(0);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(max-width:980px)').matches) return;   // phones show the static grid — skip the loop entirely
 
     // slow revolution: one lap every 90s; eases to near-stop on hover so names stay readable
     var SPEED = 2 * Math.PI / 90;
     var factor = 1, targetFactor = 1, offset = 0, last = null, rafOk = false;
-    stage.addEventListener('mouseenter', function(){ targetFactor = .08; });
+    stage.addEventListener('mouseenter', function(){ targetFactor = 0; });
     stage.addEventListener('mouseleave', function(){ targetFactor = 1; });
     function tick(ts){
       if (last !== null){
