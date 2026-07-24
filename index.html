@@ -892,7 +892,7 @@
   var SECRETARIAT = [
     { slug:'raeed',     name:'Raeed Aziz Moinuddin',   role:'Executive Director',
       quote:'Ideas are forms of conformism; don\'t come here with an idea.' },
-    { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Chief Advisor',
+    { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Deputy Secretary of Conference',
       quote:'I don\'t play the odds. I play the man.' },
     { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director',
       quote:'everything is neutral until you give it meaning. choosing to be apolitical gives neutrality the meaning of cowardice.' },
@@ -900,7 +900,7 @@
       quote:'It\'s going to happen because I am going to make it happen.' },
     { slug:'chaarika',  name:'Chaarika Kumar',   role:'Conference Manager',
       quote:'the world is yours' },
-    { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Chief of Staff',
+    { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Deputy Executive Director',
       quote:'Impossible is a word found only in the dictionary of fools, not mine.' },
     { slug:'kavya',     name:'Kavya D',                role:'Secretary of Conference',
       quote:'This quote is too important to mess up, so I\'m playing it safe.' },
@@ -1076,6 +1076,23 @@
     if (Math.abs(dx) > 40) spin(dx < 0 ? 1 : -1);
     touchX = null;
   }, {passive:true});
+
+  /* ===== AUTO-SWIVEL — advances right every 3s until the visitor takes the wheel ===== */
+  (function(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var AUTO_MS = 3000, timer = null, paused = false;
+    function schedule(){
+      clearTimeout(timer);
+      timer = setTimeout(function(){ if (!paused) spin(1); schedule(); }, AUTO_MS);
+    }
+    function restart(){ schedule(); }        // any manual move (arrow, card, dot, swipe) resets the 3s clock
+    stage.addEventListener('click', restart);
+    dotsWrap.addEventListener('click', restart);
+    stage.addEventListener('touchend', restart);
+    stage.addEventListener('mouseenter', function(){ paused = true; });
+    stage.addEventListener('mouseleave', function(){ paused = false; });
+    schedule();
+  })();
 
   /* ===== COMMITTEE SUB-PAGES ===== */
   var pagesWrap = document.getElementById('committee-pages');
