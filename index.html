@@ -338,6 +338,11 @@
   .comm-page-body li{padding-left:26px;position:relative;margin-bottom:7px}
   .comm-page-body li::before{content:'✦';position:absolute;left:2px;color:var(--gold);font-size:.8em;top:.2em}
   .comm-page-body ul.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));column-gap:34px}
+  .stake-group{
+    margin-top:22px;margin-bottom:2px;font-weight:800;letter-spacing:.06em;
+    color:var(--gold-light);font-size:.92rem;
+  }
+  .stake-group + ul{margin-top:8px}
   .tba{color:var(--gold-deep);font-style:italic}
 
   /* numbers keep the normal font — Cronisse is for letters only */
@@ -860,29 +865,52 @@
           '<li>Infrastructure, Urban Planning &amp; Digital Development</li>' +
         '</ul>' },
     { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan','TBD'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
-      agenda:'Mandating Sports under the National Education Policy (NEP): Standardizing Infrastructure, Safety, and Curriculum',
-      about:'Through dialogue among key stakeholders in education, governance, and youth development, delegates will develop practical recommendations for embedding sports within the national education system while strengthening infrastructure, safety standards, and learning outcomes.',
+      agenda:'Revolutionizing Grassroots Athletics Under the SPARC Initiative',
+      about:'The Sports Policy and Athletic Reform Commission (SPARC) has been established as the supreme governing body for grassroots sports in the country. Built to dismantle bureaucracy and regional bias, this player-and-board alliance brings together senior executives, national selectors, legendary veterans, and state delegates to revolutionize talent discovery and academy infrastructure across India.',
       extra:
         '<h4>Vision</h4>' +
-        '<p>A future-ready, inclusive, and resilient youth fitness ecosystem — where every student has access to structured sports education through collaboration between government policymakers, school administrators, physical educators, and industry partners.</p>' +
-        '<h4>Four Defining Questions</h4>' +
-        '<p>Across four focused sessions, the forum will answer:</p>' +
+        '<p>A future-ready Indian athlete ecosystem, where talent from every district has access to world-class coaching, modern pitches, and transparent selection pathways such that it may lead to Olympic victory.</p>' +
+        '<h4>Five Defining Questions</h4>' +
+        '<p>Across focused sessions, the forum will answer:</p>' +
         '<ul>' +
-          '<li>How can space-constrained schools fulfil sports mandates without losing board affiliation?</li>' +
-          '<li>What legal guardrails are needed to safely fund sports facilities via public-private partnerships?</li>' +
-          '<li>How do we implement compulsory sports grading without penalizing non-athletic or disabled students?</li>' +
-          '<li>Which emergency safety protocols must be established to protect students during severe environmental crises?</li>' +
+          '<li><strong>Eradicating Corruption &amp; Nepotism:</strong> How will SPARC help state associations eliminate age fraud and trial bias, and enforce transparent selection processes?</li>' +
+          '<li><strong>Bridging the Rural-Urban Divide:</strong> What infrastructure frameworks and scouting networks will SPARC deploy to ensure talented youngsters in Tier-2, Tier-3, and rural districts get equal opportunities as city athletes?</li>' +
+          '<li><strong>Support for Budding Athletes:</strong> What comprehensive structures and education safeguards will SPARC mandate to protect young talent?</li>' +
+          '<li><strong>Equal Opportunities for Women\'s Sport:</strong> How will SPARC establish dedicated district-level girls\' academies, mandate equal match-play exposure, and guarantee equal access to elite coaching and facilities nationwide?</li>' +
+          '<li><strong>Importance of School Infrastructure:</strong> How can SPARC restructure and modernize inter-school tournament boards, create standardized national talent pipelines, and ensure top performers in school-level competitions get direct scouting pathways to national academies and elite training?</li>' +
         '</ul>' +
         '<h4>Stakeholders in the Room</h4>' +
+        '<p class="stake-group">Apex Bureau <span class="numfont">(4 Delegates)</span></p>' +
         '<ul class="two-col">' +
-          '<li>Ministry of Youth Affairs &amp; Sports / Sports Authority of India</li>' +
-          '<li>Ministry of Education (School Education &amp; Literacy)</li>' +
-          '<li>Central School Boards (CBSE &amp; CISCE)</li>' +
-          '<li>Budget Private Schools</li>' +
-          '<li>Government Central Schools</li>' +
-          '<li>All India Physical Education Teachers&#39; &amp; Coaches&#39; Association</li>' +
-          '<li>Medical Experts (Indian Academy of Pediatrics) / Sports Law India</li>' +
-          '<li>Corporate Sports Academies &amp; EdTech Firms</li>' +
+          '<li>President, SPARC (Supreme Authority)</li>' +
+          '<li>Vice-President</li>' +
+          '<li>Director I (Head of Men\'s Development)</li>' +
+          '<li>Director II (Head of Women\'s Development)</li>' +
+        '</ul>' +
+        '<p class="stake-group">Secretariat <span class="numfont">(6 Delegates)</span></p>' +
+        '<ul class="two-col">' +
+          '<li>Honorary Secretary (Chief Administrative Officer)</li>' +
+          '<li>Joint Secretary (State Coordination)</li>' +
+          '<li>Director of Sports and Games, ICSE Board</li>' +
+          '<li>Director of Sports and Games, CBSE Board</li>' +
+          '<li>President of Selection Committee (U-19 &amp; U-16)</li>' +
+          '<li>Director of Selection Committee</li>' +
+        '</ul>' +
+        '<p class="stake-group">Technical Experts <span class="numfont">(4 Delegates)</span></p>' +
+        '<ul class="two-col">' +
+          '<li>Representative of AICS (All India Council of Sports)</li>' +
+          '<li>Representative of SAI (Sports Authority of India)</li>' +
+          '<li>Representative of IOA (Indian Olympic Association)</li>' +
+          '<li>Representative of AFI (Athletics Federation of India)</li>' +
+          '<li>Supervisor of Indian State Sports</li>' +
+        '</ul>' +
+        '<p class="stake-group">Veteran Icons <span class="numfont">(5 Delegates)</span></p>' +
+        '<p class="tba">To be announced.</p>' +
+        '<p class="stake-group">State Sport Heads <span class="numfont">(3 Delegates)</span></p>' +
+        '<ul class="two-col">' +
+          '<li>Representative, South Athlete Development Council</li>' +
+          '<li>Representative, North-East Athlete Development Council</li>' +
+          '<li>Representative, North Athlete Development Council</li>' +
         '</ul>' },
     { slug:'veritas', eb:['Haasini K','Sudharshini','Raphael Wellington','TBD'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
       agenda:'Classified…',
@@ -891,14 +919,14 @@
   /* ===== CORE SECRETARIAT — photos go in assets/organizers/<slug>.jpg ===== */
   var SECRETARIAT = [
     { slug:'raeed',     name:'Raeed Aziz Moinuddin',   role:'Executive Director',
-      quote:'Ideas are forms of conformism; don\'t come here with an idea.' },
+      quote:'Ideas are forms of conformity; don\'t come here with an idea.' },
     { slug:'pushpak',   name:'Pushpak Natarajan',      role:'Deputy Secretary of Conference',
       quote:'I don\'t play the odds. I play the man.' },
     { slug:'mridula',   name:'Mridula Krishnan',       role:'Executive Director',
       quote:'everything is neutral until you give it meaning. choosing to be apolitical gives neutrality the meaning of cowardice.' },
     { slug:'ashvardh',  name:'Ashvardh Dinesh',        role:'Conference Manager',
       quote:'It\'s going to happen because I am going to make it happen.' },
-    { slug:'chaarika',  name:'Chaarika Kumar',   role:'Conference Manager',
+    { slug:'chaarika',  name:'Chaarika Kumar',   role:'Conference Manager',   focus:'68% 35%',
       quote:'the world is yours' },
     { slug:'sisubaran', name:'Sisubaran Moovendhan',   role:'Deputy Executive Director',
       quote:'Impossible is a word found only in the dictionary of fools, not mine.' },
@@ -1143,6 +1171,7 @@
       var img = document.createElement('img');
       img.alt = o.name;
       img.src = 'assets/organizers/' + o.slug + '.jpg';
+      if (o.focus) img.style.objectPosition = o.focus;
       img.onerror = function(){
         var span = document.createElement('span');
         span.className = 'fallback gold-text';
