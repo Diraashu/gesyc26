@@ -789,11 +789,12 @@
   var EVENT_START = new Date('2026-08-21T00:00:00+05:30'); // midnight IST, 21 Aug 2026
 
   /* ===== COMMITTEE DATA — edit descriptions here ===== */
+  var COMMON_BG_LINK = 'https://drive.google.com/drive/folders/1Zcf-Ri-wi05aqdNrw25M9NUH_mfp7-du?usp=drive_link'; // fallback until each committee has its own guide
   var COMMITTEES = [
     { slug:'salutis', eb:['Raeed Aziz Moinuddin','Lemeula Renita','Sudharshini'],    name:'Forum Salutis',              tag:'Health',                  letter:'S',
       agenda:'Strengthening Healthcare Systems in the Face of Future Pandemics',
       about:'Recognizing that future pandemics demand collective action, this committee unites representatives from government, healthcare, research, industry, and communities to develop practical policies that enhance preparedness, strengthen health systems, and safeguard public health for generations to come.' },
-    { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
+    { slug:'terra', eb:['Pushpak Natarajan','Mridula Krishnan','Aarudh Nathan'],      name:'Forum Terra',                tag:'Environment',             letter:'T',
       agenda:'The Green Transition Without Economic Collapse',
       about:'As the world races to decarbonize, this committee brings together governments, industries, scientists, and communities to pursue climate goals while safeguarding livelihoods, energy security, and equitable economic growth.',
       extra:
@@ -821,7 +822,7 @@
           '<li>Indigenous &amp; Local Community Representatives</li>' +
           '<li>International Organizations &amp; Development Partners</li>' +
         '</ul>' },
-    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Kumar','Zaha Ahmed'],   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
+    { slug:'mercatus', eb:['Ashvardh Dinesh','Chaarika Kumar','Zaha Ahmed'], bg:'https://drive.google.com/file/d/12gu37tOlxrNmh1vy6ISNaEz4YyqSB9Y7/view?usp=drive_link',   name:'Forum Mercatus',             tag:'Economy',                 letter:'M',
       agenda:'Addressing Youth Unemployment in a Changing Economy',
       about:'As technology, automation, and economic shifts redefine the world of work, this committee unites government, industry, academia, and youth voices to develop innovative, actionable strategies for creating meaningful employment opportunities for the next generation.',
       extra:
@@ -877,7 +878,7 @@
           '<li>Media &amp; Communications</li>' +
           '<li>Infrastructure, Urban Planning &amp; Digital Development</li>' +
         '</ul>' },
-    { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan','Abhinand AU'], name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
+    { slug:'athleticum', eb:['Lohith Tiruvuru','Adarsh Nathan','Abhinand AU'], bg:'https://drive.google.com/file/d/1h9pkENMKoxNcF0Mmug0HnVRtyW0HkpBL/view?usp=drive_link', name:'Forum Athleticum',           tag:'Sports',                  letter:'A',
       agenda:'Revolutionizing Grassroots Athletics Under the SPARC Initiative',
       about:'The Sports Policy and Athletic Reform Commission (SPARC) has been established as the supreme governing body for grassroots sports in the country. Built to dismantle bureaucracy and regional bias, this player-and-board alliance brings together senior executives, national selectors, legendary veterans, and state delegates to revolutionize talent discovery and academy infrastructure across India.',
       extra:
@@ -931,7 +932,7 @@
           '<li>Representative, North-East Athlete Development Council</li>' +
           '<li>Representative, North Athlete Development Council</li>' +
         '</ul>' },
-    { slug:'veritas', eb:['Haasini K','Devamilanie','Raphael Wellington'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
+    { slug:'veritas', eb:['Haasini K','Devamelanie','Raphael Wellington'],    name:'Forum Veritas',              tag:'Media & Journalism',      letter:'V',
       agenda:'Classified…',
       about:'In a world where information shapes opinions and influences decisions, the press holds the power to inform, inspire, and drive change. This committee brings together passionate voices from media, journalism, and communication to uphold the principles of truth, integrity, and accountability in the pursuit of responsible and ethical reporting.' }
   ];
@@ -1160,7 +1161,7 @@
           '<h4>About the Committee</h4>' + fieldHTML(c.about) +
           (c.extra || '') +
           '<h4>Executive Board</h4><ul>' + c.eb.map(function(n){return n==='TBD' ? '<li class="tba">To be announced</li>' : '<li>'+n+'</li>';}).join('') + '</ul>' +
-          '<h4>Background Guide</h4><p><a class="dl-btn" style="margin-top:6px" href="https://drive.google.com/drive/folders/1Zcf-Ri-wi05aqdNrw25M9NUH_mfp7-du?usp=drive_link" target="_blank" rel="noopener">Open Background Guides ↗</a></p>' +
+          '<h4>Background Guide</h4><p><a class="dl-btn" style="margin-top:6px" href="'+(c.bg || COMMON_BG_LINK)+'" target="_blank" rel="noopener">Open Background Guide'+(c.bg ? '' : 's')+' ↗</a></p>' +
         '</div>' +
       '</div>';
     pagesWrap.appendChild(div);
