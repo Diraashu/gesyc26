@@ -145,9 +145,39 @@
   @keyframes shimmer{to{background-position:200% center}}
 
   .hero-date{
-    margin-top:26px;display:inline-block;padding:10px 30px;border-radius:999px;
+    margin-top:26px;display:inline-flex;align-items:center;gap:10px;padding:10px 14px 10px 30px;border-radius:999px;
     border:1px solid var(--gold);font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;
     color:var(--gold-light);background:rgba(212,175,55,.06);
+  }
+  /* ===== Rescheduled badge + tooltip ===== */
+  .reschedule{position:relative}
+  .reschedule-pill{
+    display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;cursor:help;
+    background:var(--gold);color:var(--black);font-weight:800;
+    font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+    box-shadow:0 0 14px rgba(212,175,55,.4);
+  }
+  .reschedule-tip{
+    position:absolute;left:50%;top:calc(100% + 12px);transform:translate(-50%,-6px);width:min(280px,80vw);
+    background:linear-gradient(180deg,#0a1430,#060b18);border:1px solid var(--gold);border-radius:12px;
+    padding:14px 16px;font-size:.78rem;letter-spacing:normal;text-transform:none;color:var(--ink);line-height:1.6;
+    box-shadow:0 18px 45px rgba(0,0,0,.6);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index:20;
+  }
+  .reschedule-tip::before{
+    content:'';position:absolute;left:50%;bottom:100%;transform:translateX(-50%);
+    border:7px solid transparent;border-bottom-color:var(--gold);
+  }
+  .reschedule:hover .reschedule-tip,
+  .reschedule:focus-within .reschedule-tip,
+  .reschedule.show .reschedule-tip{opacity:1;visibility:visible;transform:translate(-50%,0);pointer-events:auto}
+  @media (max-width:820px){
+    .reschedule-tip{width:min(240px,72vw);font-size:.74rem;left:auto;right:-14px;transform:translateY(-6px)}
+    .reschedule-tip::before{left:auto;right:22px;transform:none}
+    .reschedule:hover .reschedule-tip,
+    .reschedule.show .reschedule-tip{transform:translateY(0)}
   }
   .register-cta{margin-top:30px;text-align:center}
   .register-line{font-size:clamp(.9rem,2.4vw,1.1rem);letter-spacing:.3em;text-transform:uppercase;font-weight:800;margin-bottom:14px;padding-left:.3em}
@@ -624,7 +654,13 @@
     <h1 class="gold-text">GESYC <span class="numfont">'26</span></h1>
     <div class="hero-sub">Good Earth School Youth Conclave</div>
     <div class="coming-soon">Registrations Open</div>
-    <div class="hero-date">30 &amp; 31 October 2026 · Chennai</div>
+    <div class="hero-date">
+      30 &amp; 31 October 2026 · Chennai
+      <span class="reschedule" tabindex="0">
+        <span class="reschedule-pill">↻ Rescheduled</span>
+        <span class="reschedule-tip">GESYC '26 has moved from 21–22 August to 30–31 October 2026. All other details stay the same.</span>
+      </span>
+    </div>
     <div class="register-cta">
       <div class="register-line gold-text">Register for GESYC <span class="numfont">'26</span></div>
       <!-- TODO: replace href with the real registration / Google Form link -->
@@ -1040,6 +1076,18 @@
     odSet('od-secs',  pad(s%60));
   }
   tick(); setInterval(tick, 1000);
+
+  /* ===== RESCHEDULED TOOLTIP — tap to toggle on touch devices ===== */
+  (function(){
+    var badge = document.querySelector('.reschedule');
+    if (!badge) return;
+    var pill = badge.querySelector('.reschedule-pill');
+    pill.addEventListener('click', function(e){
+      e.stopPropagation();
+      badge.classList.toggle('show');
+    });
+    document.addEventListener('click', function(){ badge.classList.remove('show'); });
+  })();
 
   /* ===== REVEAL ON SCROLL + HERO PARTICLES ===== */
   (function(){
