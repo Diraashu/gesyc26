@@ -6,6 +6,16 @@
 <title>GESYC '26 — Good Earth School Youth Conclave</title>
 <meta name="description" content="GESYC '26 — Good Earth School Youth Conclave. Five forums, one conclave. 30 & 31 October 2026, Chennai. Registrations open!">
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<meta name="theme-color" content="#05080f">
+<link rel="preload" as="image" href="assets/logos/gesyc_final.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="font" href="assets/fonts/Cronisse-Regular.woff2" type="font/woff2" crossorigin>
+<script>
+  /* logo loader: try .webp first, then a hand-dropped .png, then a gold letter */
+  function logoErr(img, letter){
+    if (!img.dataset.t){ img.dataset.t = '1'; img.src = img.src.replace(/\.webp$/, '.png'); return; }
+    img.outerHTML = '<span class="fallback gold-text">' + letter + '</span>';
+  }
+</script>
 <meta property="og:title" content="GESYC '26 — Good Earth School Youth Conclave">
 <meta property="og:description" content="Five forums. One conclave. 30 & 31 October 2026, Chennai. Registrations open!">
 <meta property="og:image" content="https://gesneoforum.com/assets/favicon.png">
@@ -28,7 +38,8 @@
   }
   @font-face{
     font-family:'Cronisse';
-    src:url('assets/fonts/Cronisse-Regular.ttf') format('truetype');
+    src:url('assets/fonts/Cronisse-Regular.woff2') format('woff2'),
+        url('assets/fonts/Cronisse-Regular.ttf') format('truetype');
     font-display:swap;
   }
   /* display font for headings & subheads only — body stays Segoe UI */
@@ -296,8 +307,12 @@
   .car-arrow.next{right:max(0px, calc(50% - 330px))}
 
   .car-dots{display:flex;gap:10px;justify-content:center;margin-top:10px}
-  .car-dots button{width:10px;height:10px;border-radius:50%;border:1px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:background .25s}
-  .car-dots button.on{background:var(--gold)}
+  .car-dots{gap:0}
+  .car-dots button{position:relative;width:28px;height:28px;border:0;background:transparent;cursor:pointer;padding:0}
+  .car-dots button::before{ /* the visible 10px dot, inside a 28px tap area */
+    content:'';position:absolute;left:9px;top:9px;width:10px;height:10px;border-radius:50%;
+    border:1px solid var(--gold);background:transparent;transition:background .25s}
+  .car-dots button.on::before{background:var(--gold)}
   .car-hint{text-align:center;color:var(--muted);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;margin-top:18px}
 
   /* ============ ESSENTIAL DOWNLOADS ============ */
@@ -587,6 +602,12 @@
     .gal-head{margin-top:44px}
     footer{padding:44px 6vw 24px}
 
+    /* --- touch targets: stacked phone / email links get a full-size tap area --- */
+    footer p a, .dropdown-panel p a{display:block;padding:11px 0}
+    footer p br, .dropdown-panel p br{display:none}
+    .reschedule-pill{padding:8px 14px}
+    .coming-soon{animation:none}               /* background-position shimmer isn't GPU-composited */
+
     /* --- phone smoothness: kill the expensive effects, lock side-scroll --- */
     nav{padding:12px 16px;backdrop-filter:none;background:rgba(5,8,15,.96)}
     body{overflow-x:clip}
@@ -608,8 +629,8 @@
 <!-- ==================== NAV ==================== -->
 <nav>
   <a href="#/" class="nav-brand gold-text">GESYC&nbsp;<span class="numfont">'26</span></a>
-  <button class="hamburger" aria-label="Menu" onclick="toggleMenu()">☰</button>
-  <ul class="nav-links">
+  <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="nav-links" onclick="toggleMenu()">☰</button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#/">Home</a></li>
     <li><a href="#/about">About GESYC</a></li>
     <li><a href="#/" onclick="scrollAfterNav('committees')">Committees</a></li>
@@ -641,14 +662,15 @@
   <div class="drawer-veil" onclick="toggleMenu(false)"></div>
 </nav>
 
+<main id="main">
 <!-- ==================== PAGE: HOME ==================== -->
 <div class="page" id="page-home">
 
   <header class="hero" id="home">
     <div class="hero-emblem">
       <div class="ripple-set"><span></span><span></span><span></span></div>
-      <img src="assets/logos/gesyc_final.png" alt="GESYC '26 emblem"
-           onerror="this.remove();document.querySelector('.hero-emblem').insertAdjacentHTML('beforeend','&lt;span class=&quot;fallback gold-text&quot;&gt;G&lt;/span&gt;')">
+      <img src="assets/logos/gesyc_final.webp" alt="GESYC '26 emblem" width="676" height="369"
+           fetchpriority="high" decoding="async" onerror="logoErr(this,'G')">
     </div>
     <div class="hero-school">Good Earth School presents</div>
     <h1 class="gold-text">GESYC <span class="numfont">'26</span></h1>
@@ -791,6 +813,7 @@
 
 <!-- ==================== PAGES: COMMITTEES (injected by JS) ==================== -->
 <div id="committee-pages"></div>
+</main>
 
 <!-- ==================== FOOTER ==================== -->
 <footer>
@@ -1001,8 +1024,8 @@
 
   function logoHTML(c, cls){
     return '<div class="'+cls+'">' +
-      '<img src="assets/logos/'+c.slug+'.png" alt="'+c.name+' logo" ' +
-      'onerror="this.outerHTML=\'<span class=&quot;fallback gold-text&quot;>'+c.letter+'</span>\'">' +
+      '<img src="assets/logos/'+c.slug+'.webp" alt="'+c.name+' logo" width="369" height="369" decoding="async" ' +
+      'onerror="logoErr(this,\''+c.letter+'\')">' +
       '</div>';
   }
 
@@ -1019,19 +1042,31 @@
     document.getElementById('odometer').innerHTML = html;
   })();
 
+  // After a "jump" (transition off), switch the transition back on two frames later.
+  // This replaces the old offsetHeight trick, which forced a synchronous layout every time.
+  var _restore = [], _restoreQueued = false;
+  function restoreTransition(strip){
+    _restore.push(strip);
+    if (_restoreQueued) return;
+    _restoreQueued = true;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      _restore.forEach(function(st){ st.style.transition = ''; });
+      _restore = []; _restoreQueued = false;
+    }); });
+  }
+
   function setDigit(d, v, instant){
     var strip = d.firstChild, cur = +d.dataset.v;
     if (cur === v && !instant) return;
     var pos = (!instant && v < cur) ? 10 + v : v;   // wrap 9→0 by rolling into the strip's second half
     if (instant) strip.style.transition = 'none';
     strip.style.transform = 'translateY(-' + (pos * 1.1) + 'em)';
-    if (instant){ void strip.offsetHeight; strip.style.transition = ''; }
+    if (instant) restoreTransition(strip);
     if (pos >= 10){
       setTimeout(function(){                         // snap back invisibly once the roll lands
         strip.style.transition = 'none';
         strip.style.transform = 'translateY(-' + (v * 1.1) + 'em)';
-        void strip.offsetHeight;
-        strip.style.transition = '';
+        restoreTransition(strip);
       }, 850);
     }
     d.dataset.v = v;
@@ -1090,17 +1125,19 @@
   (function(){
     var targets = document.querySelectorAll('section .sec-label, section .sec-title, section .rule, #odometer, #countdown-note, .carousel-stage, .car-dots, .car-hint, .dl-card');
     targets.forEach(function(el){ el.classList.add('reveal'); });
-    function checkReveals(){
-      document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
-        var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * .92 && r.bottom > 0) el.classList.add('in');
-      });
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, {rootMargin:'0px 0px -8% 0px', threshold:.01});
+      targets.forEach(function(el){ io.observe(el); });
+    } else {
+      targets.forEach(function(el){ el.classList.add('in'); });   // very old browser: just show everything
     }
-    window.addEventListener('scroll', checkReveals, {passive:true});
-    window.addEventListener('resize', checkReveals);
-    setInterval(checkReveals, 700);   // safety net: reveals fire even if scroll events are swallowed
-    checkReveals();
 
+    // floating embers: skip on phones / reduced-motion (they're hidden there anyway)
+    if (window.matchMedia('(max-width:820px)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var host = document.createElement('div');
     host.className = 'particles';
     for (var i = 0; i < 16; i++){
@@ -1127,7 +1164,7 @@
       logoHTML(c,'car-logo') +
       '<div class="car-name gold-text">'+fixChars(c.name)+'</div>' +
       '<div class="car-tag">'+fixChars(c.tag)+'</div>' +
-      '<a class="know-more" href="#/committee/'+c.slug+'" onclick="event.stopPropagation()">Know More</a>';
+      '<a class="know-more" href="#/committee/'+c.slug+'" aria-label="Know more about '+c.name.replace(/&/g,'and')+'" onclick="event.stopPropagation()">Know More</a>';
     card.addEventListener('click', function(){ if(i!==current){ current=i; renderCarousel(); } });
     stage.appendChild(card);
 
@@ -1236,6 +1273,7 @@
       var img = document.createElement('img');
       img.alt = o.name;
       img.src = 'assets/organizers/' + o.slug + '.jpg';
+      img.loading = 'lazy'; img.decoding = 'async'; img.width = 256; img.height = 256;
       if (o.focus) img.style.objectPosition = o.focus;
       img.onerror = function(){
         var span = document.createElement('span');
@@ -1311,7 +1349,9 @@
     var n = document.querySelector('.nav-links');
     var open = (force === undefined) ? !n.classList.contains('open') : force;
     n.classList.toggle('open', open);
-    document.querySelector('.hamburger').textContent = open ? '✕' : '☰';
+    var hb = document.querySelector('.hamburger');
+    hb.textContent = open ? '✕' : '☰';
+    hb.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   var pendingScroll = null;
   function scrollAfterNav(sectionId){

@@ -1,11 +1,13 @@
-Drop the committee logo images in this folder with EXACTLY these filenames
-(PNG with transparent background works best):
+Committee logos live here, named after the committee slug:
 
-  gesyc.png       -> main GESYC '26 emblem (hero section)   [STILL NEEDED]
-  terra.png       -> Forum Terra (Environment)               [you have this - gold tree]
-  mercatus.png    -> Forum Mercatus (Economy)                [you have this - rupee cloud + gears]
-  libertas.png    -> Forum Libertas et Cultura (HR+Culture)  [you have this - hands + star]
-  athleticum.png  -> Forum Athleticum (Sports)               [you have this - gold ball]
-  veritas.png     -> Forum Veritas (Media & Journalism)      [STILL NEEDED - no logo shared yet]
+  terra  mercatus  libertas  athleticum  veritas   (+ gesyc_final = the main emblem)
 
-Until a file exists, the site shows a gold letter placeholder automatically.
+The site loads  <name>.webp  first (small and fast), and falls back to  <name>.png
+if no .webp exists. So the easy way to swap a logo is: drop a new <name>.png in here
+and it just works. For best phone performance, also save a .webp copy of it:
+
+  - crop it to a SQUARE around the artwork (the site shows it as a square/circle)
+  - about 400x400 px is plenty
+  - export as WebP, quality ~85, keep transparency
+
+If neither file exists, the site shows a gold letter placeholder automatically.

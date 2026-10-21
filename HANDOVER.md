@@ -42,3 +42,13 @@ nothing to install. Any future team member with a GitHub account can run it.
 - Photos/logos: keep filenames lowercase, no spaces.
 - Test on a phone before big announcements (the drawer menu, the carousel).
 - Never commit passwords or personal data — this repo is public.
+
+## Performance notes (keep it fast on phones)
+
+- **Images:** committee logos and the hero emblem are `.webp` (see `assets/logos/README.txt`).
+  Organiser photos are 256x256 JPGs (`assets/organizers/<name>.jpg`), gallery photos are
+  ~1600px-wide JPGs. Never upload raw camera files (5-10 MB) - resize them first.
+- **Font:** the heading font is loaded as `Cronisse-Regular.woff2` (the `.ttf` is only a fallback).
+- **Hosting limit:** GitHub Pages sets a short browser-cache lifetime that we can't change.
+  Lighthouse will always flag "efficient cache lifetimes"; that is expected. The fix (if ever
+  needed) is putting a free CDN such as Cloudflare in front of the domain.
