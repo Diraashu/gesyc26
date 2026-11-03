@@ -52,3 +52,21 @@ nothing to install. Any future team member with a GitHub account can run it.
 - **Hosting limit:** GitHub Pages sets a short browser-cache lifetime that we can't change.
   Lighthouse will always flag "efficient cache lifetimes"; that is expected. The fix (if ever
   needed) is putting a free CDN such as Cloudflare in front of the domain.
+
+## Event phase switch (before / after the event)
+
+The home page has two versions built in, controlled by ONE attribute on the `<body>` tag in `index.html`:
+
+- `data-phase="after"`  -> "Thank You" + "Stay tuned for the next edition" (what GESYC '26 uses now)
+- `data-phase="before"` -> live countdown + "Registrations Open" + the register button
+
+**To start a new edition:**
+1. Change `<body data-phase="after">` to `data-phase="before"`.
+2. Set `EVENT_START` in the script (search `CONFIG`) to the new start date/time.
+3. Update the dates written in the hero, footer and the two meta/og descriptions at the top of the file
+   (search for `October 2026`), and the "Rescheduled" tooltip text if the date moves again.
+4. Replace the registration form link (search `forms.gle`).
+5. Reword the WhatsApp panel blurb (search `wa-blurb`) and update committees / EBs / gallery as needed.
+
+**When the event ends:** set it back to `data-phase="after"` and reword the "Held ..." dates.
+Add the new year's photos at the top of the Gallery page.

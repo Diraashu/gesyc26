@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GESYC '26 — Good Earth School Youth Conclave</title>
-<meta name="description" content="GESYC '26 — Good Earth School Youth Conclave. Five forums, one conclave. 30 & 31 October 2026, Chennai. Registrations open!">
+<meta name="description" content="GESYC '26 — Good Earth School Youth Conclave. Five forums, one conclave. Held 30 & 31 October 2026, Chennai. Thank you, and stay tuned for the next edition!">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <meta name="theme-color" content="#05080f">
 <link rel="preload" as="image" href="assets/logos/gesyc_final.webp" type="image/webp" fetchpriority="high">
@@ -17,7 +17,7 @@
   }
 </script>
 <meta property="og:title" content="GESYC '26 — Good Earth School Youth Conclave">
-<meta property="og:description" content="Five forums. One conclave. 30 & 31 October 2026, Chennai. Registrations open!">
+<meta property="og:description" content="Five forums. One conclave. Held 30 & 31 October 2026, Chennai. Thank you, and see you at the next edition!">
 <meta property="og:image" content="https://gesneoforum.com/assets/favicon.png">
 <meta property="og:url" content="https://gesneoforum.com/">
 <meta name="twitter:card" content="summary">
@@ -46,7 +46,7 @@
   /* display font for headings & subheads only — body stays Segoe UI */
   h1,h2,h3,h4,
   .sec-title,.sec-label,.nav-brand,.hero-school,.hero-sub,.coming-soon,
-  .car-name,.car-tag,.comm-page-title,.comm-page-tag,.register-line,
+  .car-name,.car-tag,.comm-page-title,.comm-page-tag,.register-line,.next-label,.next-title,
   .placeholder-box .big,.od-lbl,.org-name,.org-role,.core-title{
     font-family:'Cronisse','Segoe UI',serif;
   }
@@ -161,7 +161,11 @@
     border:1px solid var(--gold);font-size:.9rem;letter-spacing:.25em;text-transform:uppercase;
     color:var(--gold-light);background:rgba(212,175,55,.06);
   }
-  /* ===== Rescheduled badge + tooltip ===== */
+  /* ===== EVENT PHASE SWITCH (<body data-phase="before|after">) ===== */
+  body[data-phase="after"]  .phase-before{display:none !important}
+  body[data-phase="before"] .phase-after {display:none !important}
+
+  /* ===== Rescheduled / Concluded badge + tooltip ===== */
   .reschedule{position:relative}
   .reschedule-pill{
     display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:999px;cursor:help;
@@ -209,6 +213,20 @@
   section{padding:90px 6vw;max-width:1200px;margin:0 auto}
   .sec-label{text-align:center;font-size:.8rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue-text);margin-bottom:8px}
   .sec-title{text-align:center;font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:800;letter-spacing:.05em}
+
+  /* ============ THANK-YOU / NEXT EDITION (shown after the event) ============ */
+  .thanks-body{max-width:640px;margin:34px auto 0;text-align:center;color:var(--muted);line-height:1.9;font-size:1rem}
+  .next-card{
+    max-width:560px;margin:40px auto 0;padding:38px 26px 34px;text-align:center;border-radius:22px;
+    background:linear-gradient(180deg,rgba(16,37,78,.6),rgba(5,8,15,.92));
+    border:1px solid var(--line);
+    box-shadow:0 20px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(212,175,55,.25), 0 0 40px rgba(212,175,55,.08);
+  }
+  .next-label{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue-text);padding-left:.4em}
+  .next-title{font-size:clamp(2rem,6vw,3rem);font-weight:900;letter-spacing:.08em;margin-top:6px}
+  .next-sub{margin-top:10px;font-size:.92rem;line-height:1.7;color:var(--muted)}
+  .next-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:24px}
+  .next-actions .know-more{margin-top:0}
 
   /* ============ COUNTDOWN — single arcade odometer ============ */
   #odometer{
@@ -702,7 +720,12 @@
   }
 </style>
 </head>
-<body>
+<!-- ===== EVENT PHASE SWITCH =====
+     data-phase="after"  -> thank-you / "stay tuned for the next edition" version (current)
+     data-phase="before" -> countdown + "Registrations Open" + register button version
+     Next edition: set it back to "before", update EVENT_START in the script, the dates in the
+     hero / footer / meta tags, and the registration form link. See HANDOVER.md. -->
+<body data-phase="after">
 
 <!-- ==================== NAV ==================== -->
 <nav>
@@ -753,15 +776,24 @@
     <div class="hero-school">Good Earth School presents</div>
     <h1 class="gold-text">GESYC <span class="numfont">'26</span></h1>
     <div class="hero-sub">Good Earth School Youth Conclave</div>
-    <div class="coming-soon">Registrations Open</div>
+    <div class="coming-soon phase-before">Registrations Open</div>
+    <div class="coming-soon phase-after">Thank You</div>
     <div class="hero-date">
       30 &amp; 31 October 2026 · Chennai
-      <span class="reschedule" tabindex="0">
+      <span class="reschedule phase-before" tabindex="0">
         <span class="reschedule-pill">↻ Rescheduled</span>
         <span class="reschedule-tip">GESYC '26 has moved from 21–22 August to 30–31 October 2026. All other details stay the same.</span>
       </span>
+      <span class="reschedule phase-after" tabindex="0">
+        <span class="reschedule-pill">✓ Concluded</span>
+        <span class="reschedule-tip">GESYC '26 was held on 30 &amp; 31 October 2026. Thank you for being part of it. See you at the next edition!</span>
+      </span>
     </div>
-    <div class="register-cta">
+    <div class="register-cta phase-after">
+      <div class="register-line gold-text">Stay tuned for the next edition</div>
+      <a class="register-btn" href="https://chat.whatsapp.com/JMikTAmrQw22tSXwtHpOJv" target="_blank" rel="noopener">✦ Join the Community ✦</a>
+    </div>
+    <div class="register-cta phase-before">
       <div class="register-line gold-text">Register for GESYC <span class="numfont">'26</span></div>
       <!-- TODO: replace href with the real registration / Google Form link -->
       <a class="register-btn" href="https://forms.gle/xqLrEKWWoZKL8P7g8" target="_blank" rel="noopener">✦ Click Here ✦</a>
@@ -769,12 +801,28 @@
     <div class="scroll-hint">▼ scroll</div>
   </header>
 
-  <section id="countdown">
+  <section id="countdown" class="phase-before">
     <div class="sec-label">The clock is ticking</div>
     <h2 class="sec-title gold-text">Countdown to the Conclave</h2>
     <hr class="rule">
     <div id="odometer"><!-- digit drums injected by JS --></div>
     <p id="countdown-note">30 &amp; 31 October 2026 — two days, one conclave.</p>
+  </section>
+
+  <section id="thanks" class="phase-after">
+    <div class="sec-label">Held <span class="numfont">30 &amp; 31</span> October <span class="numfont">2026</span></div>
+    <h2 class="sec-title gold-text">Until Next Edition</h2>
+    <hr class="rule">
+    <p class="thanks-body">Two days, five forums and a room full of young minds working on real solutions. Thank you to every delegate, executive board member, organizer and supporter who made GESYC <span class="numfont">'26</span> what it was.</p>
+    <div class="next-card">
+      <div class="next-label">Next Edition</div>
+      <div class="next-title gold-text">Stay Tuned</div>
+      <p class="next-sub">Dates and registrations will be announced here and in our WhatsApp community.</p>
+      <div class="next-actions">
+        <a class="know-more" href="#/gallery">Relive the Moments</a>
+        <a class="know-more" href="https://chat.whatsapp.com/JMikTAmrQw22tSXwtHpOJv" target="_blank" rel="noopener">Join the Community</a>
+      </div>
+    </div>
   </section>
 
   <section id="committees">
@@ -864,6 +912,9 @@
     <h2 class="sec-title gold-text">Gallery</h2>
     <hr class="rule">
 
+    <h3 class="gal-head gold-text">GESYC <span class="numfont">'26</span></h3>
+    <div class="gal-placeholder">📸 Photos incoming…</div>
+
     <h3 class="gal-head gold-text">GESMUN INTRA <span class="numfont">'25</span></h3>
     <div class="gal-grid">
       <a href="assets/gallery/gesmun25intra_1.jpg"><img src="assets/gallery/gesmun25intra_1.jpg" alt="GESMUN INTRA '25" loading="lazy"></a>
@@ -898,7 +949,7 @@
   <div class="footer-grid">
     <div>
       <h4>GESYC <span class="numfont">'26</span></h4>
-      <p>Good Earth School Youth Conclave<br>30 &amp; 31 October 2026</p>
+      <p>Good Earth School Youth Conclave<br>Held 30 &amp; 31 October 2026</p>
     </div>
     <div>
       <h4>Good Earth School</h4>
@@ -943,7 +994,7 @@
         <div class="wa-sub">WhatsApp community</div>
       </div>
     </div>
-    <p class="wa-blurb">Join the community for announcements and updates about GESYC <span class="numfont">'26</span>, straight to your phone.</p>
+    <p class="wa-blurb">Stay connected with the GESYC community and be the first to hear about the next edition.</p>
     <a class="wa-qr" href="https://chat.whatsapp.com/JMikTAmrQw22tSXwtHpOJv" target="_blank" rel="noopener" aria-label="Scan or tap to join the WhatsApp community">
       <img src="assets/whatsapp-qr.png" alt="QR code to join the GES Youth Conclave 2026 WhatsApp community" width="512" height="512" loading="lazy" decoding="async">
     </a>
@@ -1142,6 +1193,7 @@
   function pad(n){ return String(n).padStart(2,'0'); }
 
   (function buildOdometer(){
+    if (document.body.getAttribute('data-phase') !== 'before') return;   // no countdown after the event
     var groups = [['od-days','Days'],['od-hours','Hours'],['od-mins','Minutes'],['od-secs','Seconds']];
     var html = '';
     groups.forEach(function(g, i){
@@ -1216,7 +1268,7 @@
     odSet('od-mins',  pad(Math.floor(s%3600/60)));
     odSet('od-secs',  pad(s%60));
   }
-  tick(); setInterval(tick, 1000);
+  if (document.body.getAttribute('data-phase') === 'before'){ tick(); setInterval(tick, 1000); }
 
   /* ===== WHATSAPP TAB — slide-out panel ===== */
   (function(){
@@ -1255,19 +1307,20 @@
 
   /* ===== RESCHEDULED TOOLTIP — tap to toggle on touch devices ===== */
   (function(){
-    var badge = document.querySelector('.reschedule');
-    if (!badge) return;
-    var pill = badge.querySelector('.reschedule-pill');
-    pill.addEventListener('click', function(e){
-      e.stopPropagation();
-      badge.classList.toggle('show');
+    var badges = document.querySelectorAll('.reschedule');
+    if (!badges.length) return;
+    badges.forEach(function(badge){
+      badge.querySelector('.reschedule-pill').addEventListener('click', function(e){
+        e.stopPropagation();
+        badge.classList.toggle('show');
+      });
     });
-    document.addEventListener('click', function(){ badge.classList.remove('show'); });
+    document.addEventListener('click', function(){ badges.forEach(function(b){ b.classList.remove('show'); }); });
   })();
 
   /* ===== REVEAL ON SCROLL + HERO PARTICLES ===== */
   (function(){
-    var targets = document.querySelectorAll('section .sec-label, section .sec-title, section .rule, #odometer, #countdown-note, .carousel-stage, .car-dots, .car-hint, .dl-card');
+    var targets = document.querySelectorAll('section .sec-label, section .sec-title, section .rule, #odometer, #countdown-note, .thanks-body, .next-card, .carousel-stage, .car-dots, .car-hint, .dl-card');
     targets.forEach(function(el){ el.classList.add('reveal'); });
     if ('IntersectionObserver' in window){
       var io = new IntersectionObserver(function(entries){
